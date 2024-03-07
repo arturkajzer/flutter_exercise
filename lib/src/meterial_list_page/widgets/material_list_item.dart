@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:warehouse/src/data/contracts.dart';
 
+import 'helmet_item.dart';
+import 'ladder_item.dart';
+import 'scaffold_part_item.dart';
+
 class MaterialListItemView extends StatelessWidget {
   const MaterialListItemView({
     super.key,
@@ -11,135 +15,30 @@ class MaterialListItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final materialTypeStr = item.materialType.toString();
-    // final materialDto;
-
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(),
-            borderRadius: BorderRadius.circular(8),
-          ),
+        height: 90,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
           child: switch (item.materialType) {
-            MaterialTypeDto.helmet => HelmetItem(),
-            MaterialTypeDto.ladder => LadderItem(),
-            MaterialTypeDto.scaffoldPart => ScaffoldPartItem(),
-          }),
-    );
-
-    // switch (item.materialType) {
-    //   case MaterialTypeDto.helmet:
-    //     return HelmetItem();
-
-    //   case MaterialTypeDto.ladder:
-    //     return LadderItem();
-
-    //   case MaterialTypeDto.scaffoldPart:
-    //     return ScaffoldPartItem();
-    // }
-  }
-}
-
-class HelmetItem extends StatelessWidget {
-  const HelmetItem({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const ListTile(
-      title: Text('HELMET'),
+            MaterialTypeDto.helmet => HelmetItem(
+                item: HelmetDto.fromJson(item.json),
+              ),
+            MaterialTypeDto.ladder => LadderItem(
+                item: LadderDto.fromJson(item.json),
+              ),
+            MaterialTypeDto.scaffoldPart => ScaffoldPartItem(
+                item: ScaffoldPartDto.fromJson(item.json),
+              ),
+          },
+        ),
+      ),
     );
   }
 }
-
-class LadderItem extends StatelessWidget {
-  const LadderItem({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const ListTile(
-      title: Text('LADDER'),
-    );
-  }
-}
-
-class ScaffoldPartItem extends StatelessWidget {
-  const ScaffoldPartItem({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const ListTile(
-      title: Text('SCAFFOLD PART'),
-    );
-  }
-}
-
-// class HelmetItem extends StatelessWidget {
-//   const HelmetItem({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: Container(
-//         decoration: BoxDecoration(
-//           color: Colors.white,
-//           border: Border.all(
-//             color: Colors.black,
-//             width: 1.0,
-//           ),
-//         ),
-//         child: const ListTile(
-//           title: Text('SCAFFOLD PART'),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class LadderItem extends StatelessWidget {
-//   const LadderItem({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: Container(
-//         decoration: BoxDecoration(
-//           color: Colors.white,
-//           border: Border.all(
-//             color: Colors.black,
-//             width: 1.0,
-//           ),
-//         ),
-//         child: const ListTile(
-//           title: Text('SCAFFOLD PART'),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class ScaffoldPartItem extends StatelessWidget {
-//   const ScaffoldPartItem({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: Container(
-//         decoration: BoxDecoration(
-//           color: Colors.white,
-//           border: Border.all(
-//             color: Colors.black,
-//             width: 1.0,
-//           ),
-//         ),
-//         child: const ListTile(
-//           title: Text('SCAFFOLD PART'),
-//         ),
-//       ),
-//     );
-//   }
-// }
