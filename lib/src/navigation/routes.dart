@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:warehouse/src/meterial_add_page/material_add.dart';
-import 'package:warehouse/src/meterial_list_page/material_list.dart';
+import 'package:warehouse/src/meterial_list_page/material_list_page.dart';
 
 part 'routes.g.dart';
 
@@ -17,14 +17,12 @@ part 'routes.g.dart';
     ),
   ],
 )
-
 class RootRoute extends ShellRouteData {
   @override
   Widget builder(BuildContext context, GoRouterState state, Widget navigator) {
     return navigator;
   }
 }
-
 
 class AppRoute extends MaterialPageRoute<void> {
   AppRoute({
@@ -48,6 +46,3 @@ class MaterialAddRoute extends GoRouteData {
   Page<void> buildPage(BuildContext context, GoRouterState state) =>
       MaterialAddPage();
 }
-
-
-

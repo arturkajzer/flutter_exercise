@@ -1,7 +1,9 @@
 import 'package:cqrs/cqrs.dart';
 import 'package:flutter/material.dart';
+import 'package:leancode_cubit_utils/leancode_cubit_utils.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 import 'package:provider/provider.dart';
+import 'package:warehouse/src/data/material_repository.dart';
 import 'package:warehouse/src/data/mock.dart';
 import 'package:warehouse/src/navigation/router.dart';
 
@@ -9,9 +11,19 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        Provider<Cqrs>(create: (context) => createCqrs()),
+        Provider<Cqrs>(create: (_) => createCqrs()),
+        Provider<MaterialRepository>(
+          create: (context) => MaterialRepository(
+            cqrs: context.read(),
+          ),
+        ),
       ],
-      child: const MyApp(),
+      child: RequestLayoutConfigProvider(
+        onLoading: (context) =>
+            const Center(child: CircularProgressIndicator()),
+        onError: (context, error, onErrorCallback) => const Text('Error'),
+        child: const MyApp(),
+      ),
     ),
   );
 }

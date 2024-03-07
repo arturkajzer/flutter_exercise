@@ -424,6 +424,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.7.1"
+  leancode_cubit_utils:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "649ead738a312c7cb9626cd13446ec3af36147d8"
+      url: "https://github.com/leancodepl/leancode_cubit_utils.git"
+    source: git
+    version: "0.0.1"
   leancode_hooks:
     dependency: "direct main"
     description:
