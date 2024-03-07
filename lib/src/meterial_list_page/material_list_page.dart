@@ -3,6 +3,7 @@ import 'package:leancode_cubit_utils/leancode_cubit_utils.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 import 'package:provider/provider.dart';
 import 'package:warehouse/src/meterial_list_page/cubit/material_list_cubit.dart';
+import 'package:warehouse/src/meterial_list_page/widgets/material_list_item.dart';
 import 'package:warehouse/src/navigation/app_page.dart';
 
 class MaterialListPage extends AppPage {
@@ -24,10 +25,18 @@ class _MaterialListPageView extends HookWidget {
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         forceMaterialTransparency: true,
-        title: const Text('Welcome'),
+        title: const Center(
+          child: Text('Materials'),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -41,21 +50,22 @@ class _MaterialListPageView extends HookWidget {
               //     child: const AppText('Fetch the data'),
               //   ),
               // ),
-              //onLoading: (context) => const Center(child: CircularProgressIndicator()),
+              onLoading: (context) =>
+                  const Center(child: CircularProgressIndicator()),
               onError: (context, error, retry) => Center(
                 child: ElevatedButton(
                   onPressed: retry,
                   child: const Text('Retry'),
                 ),
               ),
-              // onErrorCallback: context.read<ProjectDetailsCubit>().run,
               builder: (context, data) {
                 return ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   itemCount: data.length,
                   itemBuilder: (context, index) {
-                    //final assignment = data[index];
-                    return const ListTile(
-                      title: Text('OK'),
+                    final item = data[index];
+                    return MaterialListItemView(
+                      item: item,
                     );
                   },
                 );
