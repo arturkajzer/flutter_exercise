@@ -26,8 +26,11 @@ class MaterialRepository {
     return result;
   }
 
-  Future<CommandResult> addLadderItem(String name, int maximumWorkingHeightInCm,
-      int ladderLoadCapacityInKg) async {
+  Future<CommandResult> addLadderItem(
+    String name,
+    int maximumWorkingHeightInCm,
+    int ladderLoadCapacityInKg,
+  ) async {
     final result = await _cqrs.run(
       AddLadder(
         name: name,
@@ -39,7 +42,10 @@ class MaterialRepository {
   }
 
   Future<CommandResult> addScaffoldPartItem(
-      String name, int quantity, Uint8List imageBytes) async {
+    String name,
+    int quantity,
+    Uint8List imageBytes,
+  ) async {
     final result = await _cqrs.run(
       AddScaffoldPart(
         name: name,
