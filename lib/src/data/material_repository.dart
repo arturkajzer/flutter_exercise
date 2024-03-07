@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cqrs/cqrs.dart';
 import 'package:warehouse/src/data/contracts.dart';
 
@@ -19,6 +21,30 @@ class MaterialRepository {
       AddHelmet(
         name: name,
         quantity: quantity,
+      ),
+    );
+    return result;
+  }
+
+  Future<CommandResult> addLadderItem(String name, int maximumWorkingHeightInCm,
+      int ladderLoadCapacityInKg) async {
+    final result = await _cqrs.run(
+      AddLadder(
+        name: name,
+        maximumWorkingHeightInCm: maximumWorkingHeightInCm,
+        ladderLoadCapacityInKg: ladderLoadCapacityInKg,
+      ),
+    );
+    return result;
+  }
+
+  Future<CommandResult> addScaffoldPartItem(
+      String name, int quantity, Uint8List imageBytes) async {
+    final result = await _cqrs.run(
+      AddScaffoldPart(
+        name: name,
+        quantity: quantity,
+        imageBytes: imageBytes,
       ),
     );
     return result;
