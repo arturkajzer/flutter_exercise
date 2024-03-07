@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:warehouse/src/meterial_list_page/cubit/material_list_cubit.dart';
 import 'package:warehouse/src/meterial_list_page/widgets/material_list_item.dart';
 import 'package:warehouse/src/navigation/app_page.dart';
+import 'package:warehouse/src/navigation/routes.dart';
 
 class MaterialListPage extends AppPage {
   MaterialListPage()
@@ -33,7 +34,9 @@ class _MaterialListPageView extends HookWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              MaterialAddRoute().go(context);
+            },
             icon: const Icon(Icons.add),
           ),
         ],
@@ -44,14 +47,6 @@ class _MaterialListPageView extends HookWidget {
           Expanded(
             child: RequestCubitBuilder(
               cubit: materialListCubit,
-              // onInitial: (context) => Center(
-              //   child: ElevatedButton(
-              //     onPressed: context.read<ProjectDetailsCubit>().run,
-              //     child: const AppText('Fetch the data'),
-              //   ),
-              // ),
-              onLoading: (context) =>
-                  const Center(child: CircularProgressIndicator()),
               onError: (context, error, retry) => Center(
                 child: ElevatedButton(
                   onPressed: retry,

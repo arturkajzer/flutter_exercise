@@ -44,11 +44,11 @@ class ScaffoldPartItem extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: Image.memory(
             imageBytes,
           ),
-        )
+        ),
       ],
     );
   }

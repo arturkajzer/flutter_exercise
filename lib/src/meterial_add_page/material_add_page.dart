@@ -14,13 +14,27 @@ class _MaterialAddPageView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    //final MaterialRepository _materialRepository = context.read();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         forceMaterialTransparency: true,
         title: const Text('Welcome'),
       ),
-      body: const Center(child: Text('Material ADD PAGE')),
+      body: Center(
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                //  await  _materialRepository.addHelmetItem('test', 1);
+                //  MaterialListRoute().go(context);
+              },
+              child: const Text('Material ADD PAGE'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

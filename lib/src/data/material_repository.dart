@@ -13,4 +13,14 @@ class MaterialRepository {
     final result = await _cqrs.get(query);
     return result;
   }
+
+  Future<CommandResult> addHelmetItem(String name, int quantity) async {
+    final result = await _cqrs.run(
+      AddHelmet(
+        name: name,
+        quantity: quantity,
+      ),
+    );
+    return result;
+  }
 }

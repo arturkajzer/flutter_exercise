@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:warehouse/src/meterial_add_page/material_add.dart';
+import 'package:warehouse/src/meterial_add_page/material_add_page.dart';
 import 'package:warehouse/src/meterial_list_page/material_list_page.dart';
 
 part 'routes.g.dart';
