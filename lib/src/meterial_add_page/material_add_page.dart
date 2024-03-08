@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/material_add_cubit.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/meterial_add_state.dart';
 import 'package:warehouse/src/meterial_add_page/icon_label.dart';
@@ -50,61 +51,59 @@ class _MaterialAddPageView extends HookWidget {
                 padding: const EdgeInsets.all(10),
                 child: Stack(
                   children: [
-                    SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Center(
-                            child: Text(
-                              'Select the category and complete the form to add a new item to the warehouse',
+                    LoadingOverlay(
+                      isLoading: state is DataSavingState,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Center(
+                              child: Text(
+                                'Select the category and complete the form to add a new item to the warehouse',
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Text('Category: '),
-                          DropdownButton<MaterialCategory>(
-                            hint: const Text('Please, select item'),
-                            value: selectedCategory,
-                            onChanged: materialAddCubit.selectForm,
-                            items: MaterialCategory.values.map((iconLabel) {
-                              return DropdownMenuItem<MaterialCategory>(
-                                value: iconLabel,
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(iconLabel.icon),
-                                    const SizedBox(width: 10),
-                                    Text(iconLabel.label),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                switch (selectedCategory) {
-                                  MaterialCategory.helmet => const HelmetForm(),
-                                  MaterialCategory.ladder => const LadderForm(),
-                                  MaterialCategory.scaffoldPart =>
-                                    const ScaffoldPartForm(),
-                                  null => Container(),
-                                },
-                              ],
+                            const SizedBox(
+                              height: 20,
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (state is DataSavingState)
-                      const Opacity(
-                        opacity: 0.5,
-                        child: Center(
-                          child: CircularProgressIndicator(),
+                            const Text('Category: '),
+                            DropdownButton<MaterialCategory>(
+                              hint: const Text('Please, select item'),
+                              value: selectedCategory,
+                              onChanged: materialAddCubit.selectForm,
+                              items: MaterialCategory.values.map((iconLabel) {
+                                return DropdownMenuItem<MaterialCategory>(
+                                  value: iconLabel,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(iconLabel.icon),
+                                      const SizedBox(width: 10),
+                                      Text(iconLabel.label),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  switch (selectedCategory) {
+                                    MaterialCategory.helmet =>
+                                      const HelmetForm(),
+                                    MaterialCategory.ladder =>
+                                      const LadderForm(),
+                                    MaterialCategory.scaffoldPart =>
+                                      const ScaffoldPartForm(),
+                                    null => Container(),
+                                  },
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                    ),
                   ],
                 ),
               );
