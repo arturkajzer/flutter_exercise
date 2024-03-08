@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/material_add_cubit.dart';
+import 'package:warehouse/src/meterial_add_page/cubit/meterial_add_state.dart';
 import 'package:warehouse/src/meterial_add_page/icon_label.dart';
 import 'package:warehouse/src/meterial_add_page/widgets/helmet_form/helmet_form.dart';
 import 'package:warehouse/src/meterial_add_page/widgets/ladder_form/ladder_form.dart';
 import 'package:warehouse/src/meterial_add_page/widgets/scaffold_part_form/scaffold_part_form.dart';
 import 'package:warehouse/src/navigation/app_page.dart';
+import 'package:warehouse/src/navigation/routes.dart';
 
 class MaterialAddPage extends AppPage {
   MaterialAddPage()
@@ -20,75 +22,93 @@ class _MaterialAddPageView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final materialAddCubit = useBloc(MaterialAddCubit.new);
-    final materialAddCubit = context.read<MaterialAddCubit>();
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        title: const Center(
-          child: Text('Add material'),
+    return BlocProvider(
+      create: (context) => MaterialAddCubit(
+        materialListCubit: context.read(),
+        materialRepository: context.read(),
+      )..pageInit(),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          forceMaterialTransparency: true,
+          title: const Center(
+            child: Text('Add material'),
+          ),
         ),
-      ),
-      body: BlocBuilder<MaterialAddCubit, IconLabel?>(
-        builder: (context, selectedOption) {
-          return Padding(
-            padding: const EdgeInsets.all(10),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Center(
-                    child: Text(
-                      'Select the category and complete the form to add a new item to the warehouse',
+        body: BlocListener<MaterialAddCubit, MaterialAddState>(
+          listener: (context, state) {
+            if (state is DataSavedState) {
+              MaterialListRoute().go(context);
+            }
+          },
+          child: BlocBuilder<MaterialAddCubit, MaterialAddState>(
+            builder: (context, state) {
+              final materialAddCubit = context.read<MaterialAddCubit>();
+              switch (state) {
+                case MaterialAddDataState():
+                  return Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Center(
+                            child: Text(
+                              'Select the category and complete the form to add a new item to the warehouse',
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text('Category: '),
+                          DropdownButton<MaterialCategory>(
+                            hint: const Text('Please, select item'),
+                            value: state.selectedCategory,
+                            onChanged: (value) {
+                              materialAddCubit.selectForm(value!);
+                            },
+                            items: MaterialCategory.values.map((iconLabel) {
+                              return DropdownMenuItem<MaterialCategory>(
+                                value: iconLabel,
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(iconLabel.icon),
+                                    const SizedBox(width: 10),
+                                    Text(iconLabel.label),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                switch (state.selectedCategory) {
+                                  MaterialCategory.helmet => const HelmetForm(),
+                                  MaterialCategory.ladder => const LadderForm(),
+                                  MaterialCategory.scaffoldPart =>
+                                    const ScaffoldPartForm(),
+                                  null => Container(),
+                                },
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text('Category: '),
-                  DropdownButton<IconLabel>(
-                    hint: const Text('Please, select item'),
-                    value: selectedOption,
-                    onChanged: materialAddCubit.selectForm,
-                    items: IconLabel.values.map((iconLabel) {
-                      return DropdownMenuItem<IconLabel>(
-                        value: iconLabel,
-                        child: Row(
-                          children: <Widget>[
-                            Icon(iconLabel.icon),
-                            const SizedBox(width: 10),
-                            Text(iconLabel.label),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        switch (selectedOption) {
-                          null => Container(),
-                          IconLabel.helmet => const HelmetForm(),
-                          IconLabel.ladder => const LadderForm(),
-                          IconLabel.scaffoldPart => const ScaffoldPartForm(),
-                        },
-              
-                        // if (selectedOption == IconLabel.helmet)
-                        //   HelmetForm()
-                        // else
-                        //   Placeholder(),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+                  );
+                case PageInitialState():
+                case DataSavingState():
+                case DataSavedState():
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+              }
+            },
+          ),
+        ),
       ),
     );
   }

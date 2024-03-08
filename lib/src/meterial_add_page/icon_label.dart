@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum IconLabel {
+enum MaterialCategory {
   helmet(
     'Helmet',
     Icons.health_and_safety,
@@ -15,7 +15,7 @@ enum IconLabel {
   ),
   ;
 
-  const IconLabel(this.label, this.icon);
+  const MaterialCategory(this.label, this.icon);
   final String label;
   final IconData icon;
 }
