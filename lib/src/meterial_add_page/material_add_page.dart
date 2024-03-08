@@ -44,11 +44,13 @@ class _MaterialAddPageView extends HookWidget {
           child: BlocBuilder<MaterialAddCubit, MaterialAddState>(
             builder: (context, state) {
               final materialAddCubit = context.read<MaterialAddCubit>();
-              switch (state) {
-                case MaterialAddDataState():
-                  return Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: SingleChildScrollView(
+              final selectedCategory = state.selectedCategory;
+
+              return Padding(
+                padding: const EdgeInsets.all(10),
+                child: Stack(
+                  children: [
+                    SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -63,10 +65,8 @@ class _MaterialAddPageView extends HookWidget {
                           const Text('Category: '),
                           DropdownButton<MaterialCategory>(
                             hint: const Text('Please, select item'),
-                            value: state.selectedCategory,
-                            onChanged: (value) {
-                              materialAddCubit.selectForm(value!);
-                            },
+                            value: selectedCategory,
+                            onChanged: materialAddCubit.selectForm,
                             items: MaterialCategory.values.map((iconLabel) {
                               return DropdownMenuItem<MaterialCategory>(
                                 value: iconLabel,
@@ -85,7 +85,7 @@ class _MaterialAddPageView extends HookWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                switch (state.selectedCategory) {
+                                switch (selectedCategory) {
                                   MaterialCategory.helmet => const HelmetForm(),
                                   MaterialCategory.ladder => const LadderForm(),
                                   MaterialCategory.scaffoldPart =>
@@ -98,14 +98,16 @@ class _MaterialAddPageView extends HookWidget {
                         ],
                       ),
                     ),
-                  );
-                case PageInitialState():
-                case DataSavingState():
-                case DataSavedState():
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-              }
+                    if (state is DataSavingState)
+                      const Opacity(
+                        opacity: 0.5,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                  ],
+                ),
+              );
             },
           ),
         ),

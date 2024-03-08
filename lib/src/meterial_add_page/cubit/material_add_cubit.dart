@@ -8,32 +8,28 @@ class MaterialAddCubit extends Cubit<MaterialAddState> {
   MaterialAddCubit({
     required this.materialRepository,
     required this.materialListCubit,
-  }) : super(const PageInitialState());
+  }) : super(const ShowDataState(selectedCategory: null));
   final MaterialRepository materialRepository;
   final MaterialListCubit materialListCubit;
 
   void pageInit() => emit(
-        const MaterialAddDataState(
-          selectedCategory: null,
-          helmetName: '',
-        ),
+        const ShowDataState(selectedCategory: null),
       );
 
-  void selectForm(MaterialCategory selectedForm) => emit(
-        MaterialAddDataState(
-          selectedCategory: selectedForm,
-          helmetName: 'test',
-        ),
+  void selectForm(MaterialCategory? selectedCategory) => emit(
+        ShowDataState(selectedCategory: selectedCategory),
       );
 
   Future<void> submitData() async {
-    if (state is! MaterialAddDataState) {
+    if (state is! ShowDataState) {
       return;
     }
 
-    emit(const DataSavingState());
+    final currentState = state as ShowDataState;
+
+    emit(DataSavingState(selectedCategory: currentState.selectedCategory));
     await materialRepository.addHelmetItem('test', 1);
     await materialListCubit.run();
-    emit(const DataSavedState());
+    emit(DataSavedState(selectedCategory: currentState.selectedCategory));
   }
 }
