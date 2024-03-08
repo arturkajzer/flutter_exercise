@@ -5,6 +5,8 @@ import 'package:leancode_hooks/leancode_hooks.dart';
 import 'package:provider/provider.dart';
 import 'package:warehouse/src/data/material_repository.dart';
 import 'package:warehouse/src/data/mock.dart';
+import 'package:warehouse/src/meterial_add_page/cubit/material_add_cubit.dart';
+import 'package:warehouse/src/meterial_list_page/cubit/material_list_cubit.dart';
 import 'package:warehouse/src/navigation/router.dart';
 
 void main() {
@@ -16,6 +18,18 @@ void main() {
           create: (context) => MaterialRepository(
             cqrs: context.read(),
           ),
+        ),
+
+        // TODO: What is the best pattern for refreshing list?
+        Provider<MaterialListCubit>(
+          create: (context) => MaterialListCubit(
+            materialRepository: context.read(),
+          ),
+        ),
+
+        // TODO: Move to item add page
+        Provider<MaterialAddCubit>(
+          create: (context) => MaterialAddCubit(),
         ),
       ],
       child: RequestLayoutConfigProvider(

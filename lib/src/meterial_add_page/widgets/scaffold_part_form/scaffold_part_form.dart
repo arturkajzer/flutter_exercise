@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 
-class HelmetForm extends HookWidget {
-  const HelmetForm({super.key});
+class ScaffoldPartForm extends HookWidget {
+  const ScaffoldPartForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,16 +42,20 @@ class HelmetForm extends HookWidget {
                   Expanded(
                     child: MaterialButton(
                       color: Theme.of(context).colorScheme.primary,
-                      onPressed: () {
-                        formKey.currentState?.saveAndValidate();
-                        debugPrint(formKey.currentState?.value.toString());
+                      onPressed: () async {
+  
+                        if (formKey.currentState!.saveAndValidate()) {
+                          //print('OK');
+                        }
 
-                        // // On another side, can access all field values without saving form with instantValues
-                        // _formKey.currentState?.validate();
-                        // debugPrint(_formKey.currentState?.instantValue.toString());
+                        // final materialRepository = context.read<MaterialRepository>();
+                        // await  materialRepository.addHelmetItem('test', 1);
+                        // final materialListCubit = context.read<MaterialListCubit>();
+                        // await materialListCubit.run();
+                        //MaterialListRoute().go(context);
                       },
                       child: const Text(
-                        'Add helmet',
+                        'Add scaffold part',
                         style: TextStyle(
                           color: Colors.white,
                         ),

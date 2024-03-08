@@ -19,11 +19,12 @@ class _MaterialListPageView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final materialListCubit = useBloc(
-      () => MaterialListCubit(
-        materialRepository: context.read(),
-      )..run(),
-    );
+    // final materialListCubit = useBloc(
+    //   () => MaterialListCubit(
+    //     materialRepository: context.read(),
+    //   )..run(),
+    // );
+    final materialListCubit = context.read<MaterialListCubit>()..run();
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
