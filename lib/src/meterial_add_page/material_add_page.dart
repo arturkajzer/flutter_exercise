@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/material_add_cubit.dart';
@@ -9,7 +10,6 @@ import 'package:warehouse/src/meterial_add_page/widgets/helmet_form/helmet_form.
 import 'package:warehouse/src/meterial_add_page/widgets/ladder_form/ladder_form.dart';
 import 'package:warehouse/src/meterial_add_page/widgets/scaffold_part_form/scaffold_part_form.dart';
 import 'package:warehouse/src/navigation/app_page.dart';
-import 'package:warehouse/src/navigation/routes.dart';
 
 class MaterialAddPage extends AppPage {
   MaterialAddPage()
@@ -25,7 +25,6 @@ class _MaterialAddPageView extends HookWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MaterialAddCubit(
-        materialListCubit: context.read(),
         materialRepository: context.read(),
       )..pageInit(),
       child: Scaffold(
@@ -39,7 +38,7 @@ class _MaterialAddPageView extends HookWidget {
         body: BlocListener<MaterialAddCubit, MaterialAddState>(
           listener: (context, state) {
             if (state is DataSavedState) {
-              MaterialListRoute().go(context);
+              context.pop<bool>(true); //MaterialListRoute().go(context);
             }
           },
           child: BlocBuilder<MaterialAddCubit, MaterialAddState>(

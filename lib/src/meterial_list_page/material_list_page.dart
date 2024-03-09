@@ -19,12 +19,11 @@ class _MaterialListPageView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final materialListCubit = useBloc(
-    //   () => MaterialListCubit(
-    //     materialRepository: context.read(),
-    //   )..run(),
-    // );
-    final materialListCubit = context.read<MaterialListCubit>()..run();
+    final materialListCubit = useBloc(
+      () => MaterialListCubit(
+        materialRepository: context.read(),
+      )..run(),
+    );
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -35,8 +34,11 @@ class _MaterialListPageView extends HookWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              MaterialAddRoute().go(context);
+            onPressed: () async {
+              final result = await MaterialAddRoute().push<bool>(context);
+              if (result != null && result) {
+                await materialListCubit.run();
+              }
             },
             icon: const Icon(Icons.add),
           ),
