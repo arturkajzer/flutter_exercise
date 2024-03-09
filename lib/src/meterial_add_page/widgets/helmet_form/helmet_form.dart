@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/material_add_cubit.dart';
 
 class HelmetForm extends HookWidget {
-  const HelmetForm({super.key});
+  const HelmetForm(this.materialAddCubit, {super.key});
+
+  final MaterialAddCubit materialAddCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,7 @@ class HelmetForm extends HookWidget {
                       color: Theme.of(context).colorScheme.primary,
                       onPressed: () async {
                         if (formKey.currentState!.saveAndValidate()) {
-                          await context.read<MaterialAddCubit>().submitData();
+                          await materialAddCubit.submitData();
                         }
                       },
                       child: const Text(

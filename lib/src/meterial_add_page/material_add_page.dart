@@ -23,91 +23,92 @@ class _MaterialAddPageView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MaterialAddCubit(
+    final materialAddCubit = useBloc(
+      () => MaterialAddCubit(
         materialRepository: context.read(),
       )..pageInit(),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          forceMaterialTransparency: true,
-          title: const Center(
-            child: Text('Add material'),
-          ),
-        ),
-        body: BlocListener<MaterialAddCubit, MaterialAddState>(
-          listener: (context, state) {
-            if (state is DataSavedState) {
-              context.pop<bool>(true); //MaterialListRoute().go(context);
-            }
-          },
-          child: BlocBuilder<MaterialAddCubit, MaterialAddState>(
-            builder: (context, state) {
-              final materialAddCubit = context.read<MaterialAddCubit>();
-              final selectedCategory = state.selectedCategory;
+    );
 
-              return Padding(
-                padding: const EdgeInsets.all(10),
-                child: Stack(
-                  children: [
-                    LoadingOverlay(
-                      isLoading: state is DataSavingState,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Center(
-                              child: Text(
-                                'Select the category and complete the form to add a new item to the warehouse',
-                              ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        forceMaterialTransparency: true,
+        title: const Center(
+          child: Text('Add material'),
+        ),
+      ),
+      body: BlocListener<MaterialAddCubit, MaterialAddState>(
+        bloc: materialAddCubit,
+        listener: (context, state) {
+          if (state is DataSavedState) {
+            context.pop<bool>(true); //MaterialListRoute().go(context);
+          }
+        },
+        child: BlocBuilder<MaterialAddCubit, MaterialAddState>(
+          bloc: materialAddCubit,
+          builder: (context, state) {
+            final selectedCategory = state.selectedCategory;
+
+            return Padding(
+              padding: const EdgeInsets.all(10),
+              child: Stack(
+                children: [
+                  LoadingOverlay(
+                    isLoading: state is DataSavingState,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Center(
+                            child: Text(
+                              'Select the category and complete the form to add a new item to the warehouse',
                             ),
-                            const SizedBox(
-                              height: 20,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text('Category: '),
+                          DropdownButton<MaterialCategory>(
+                            hint: const Text('Please, select item'),
+                            value: selectedCategory,
+                            onChanged: materialAddCubit.selectForm,
+                            items: MaterialCategory.values.map((iconLabel) {
+                              return DropdownMenuItem<MaterialCategory>(
+                                value: iconLabel,
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(iconLabel.icon),
+                                    const SizedBox(width: 10),
+                                    Text(iconLabel.label),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                switch (selectedCategory) {
+                                  MaterialCategory.helmet =>
+                                    HelmetForm(materialAddCubit),
+                                  MaterialCategory.ladder => const LadderForm(),
+                                  MaterialCategory.scaffoldPart =>
+                                    const ScaffoldPartForm(),
+                                  null => Container(),
+                                },
+                              ],
                             ),
-                            const Text('Category: '),
-                            DropdownButton<MaterialCategory>(
-                              hint: const Text('Please, select item'),
-                              value: selectedCategory,
-                              onChanged: materialAddCubit.selectForm,
-                              items: MaterialCategory.values.map((iconLabel) {
-                                return DropdownMenuItem<MaterialCategory>(
-                                  value: iconLabel,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(iconLabel.icon),
-                                      const SizedBox(width: 10),
-                                      Text(iconLabel.label),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  switch (selectedCategory) {
-                                    MaterialCategory.helmet =>
-                                      const HelmetForm(),
-                                    MaterialCategory.ladder =>
-                                      const LadderForm(),
-                                    MaterialCategory.scaffoldPart =>
-                                      const ScaffoldPartForm(),
-                                    null => Container(),
-                                  },
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              );
-            },
-          ),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
