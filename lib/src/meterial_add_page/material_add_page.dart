@@ -1,116 +1,137 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
-import 'package:loading_overlay/loading_overlay.dart';
-import 'package:warehouse/src/meterial_add_page/cubit/material_add_cubit.dart';
-import 'package:warehouse/src/meterial_add_page/cubit/meterial_add_state.dart';
-import 'package:warehouse/src/meterial_add_page/icon_label.dart';
-import 'package:warehouse/src/meterial_add_page/widgets/helmet_form/helmet_form.dart';
-import 'package:warehouse/src/meterial_add_page/widgets/ladder_form/ladder_form.dart';
-import 'package:warehouse/src/meterial_add_page/widgets/scaffold_part_form/scaffold_part_form.dart';
 import 'package:warehouse/src/navigation/app_page.dart';
 
 class MaterialAddPage extends AppPage {
   MaterialAddPage()
       : super(
-          builder: (context) => const _MaterialAddPageView(),
+          builder: (context) => _MaterialAddPageView(),
         );
 }
 
 class _MaterialAddPageView extends HookWidget {
-  const _MaterialAddPageView();
+  _MaterialAddPageView();
+  final TextEditingController _textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final materialAddCubit = useBloc(
-      () => MaterialAddCubit(
-        materialRepository: context.read(),
-      )..pageInit(),
-    );
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        title: const Center(
-          child: Text('Add material'),
-        ),
-      ),
-      body: BlocListener<MaterialAddCubit, MaterialAddState>(
-        bloc: materialAddCubit,
-        listener: (context, state) {
-          if (state is DataSavedState) {
-            context.pop<bool>(true); //MaterialListRoute().go(context);
-          }
-        },
-        child: BlocBuilder<MaterialAddCubit, MaterialAddState>(
-          bloc: materialAddCubit,
-          builder: (context, state) {
-            final selectedCategory = state.materialAddData.selectedCategory;
-
-            return Padding(
-              padding: const EdgeInsets.all(10),
-              child: Stack(
-                children: [
-                  LoadingOverlay(
-                    isLoading: state is DataSavingState,
-                    child: SingleChildScrollView(
+    return BlocProvider(
+      create: (context) => TextCubit(),
+      child: Scaffold(
+        appBar: AppBar(title: Text("Cubit Example")),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            BlocBuilder<TextCubit, TextState>(
+              builder: (context, state) {
+                return Column(
+                  children: [
+                    Visibility(
+                      visible: state.isVisible,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Center(
-                            child: Text(
-                              'Select the category and complete the form to add a new item to the warehouse',
-                            ),
+                          TextField(
+                            controller: _textEditingController,
+                            onChanged: (value) {
+                              context.read<TextCubit>().updateText(value);
+                            },
+                            decoration:
+                                InputDecoration(labelText: 'Enter Text'),
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Text('Category: '),
-                          DropdownButton<MaterialCategory>(
-                            hint: const Text('Please, select item'),
-                            value: selectedCategory,
-                            onChanged: materialAddCubit.selectForm,
-                            items: MaterialCategory.values.map((iconLabel) {
-                              return DropdownMenuItem<MaterialCategory>(
-                                value: iconLabel,
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(iconLabel.icon),
-                                    const SizedBox(width: 10),
-                                    Text(iconLabel.label),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                switch (selectedCategory) {
-                                  MaterialCategory.helmet =>
-                                    HelmetForm(materialAddCubit),
-                                  MaterialCategory.ladder => const LadderForm(),
-                                  MaterialCategory.scaffoldPart =>
-                                    const ScaffoldPartForm(),
-                                  null => Container(),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.read<TextCubit>().decrement();
                                 },
-                              ],
-                            ),
+                                child: Icon(Icons.remove),
+                              ),
+                              SizedBox(width: 10),
+                              Text('${state.number}'),
+                              SizedBox(width: 10),
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.read<TextCubit>().increment();
+                                },
+                                child: Icon(Icons.add),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
+                    SizedBox(height: 20),
+                    DropdownButton<String>(
+                      value: state.isVisible ? 'Visible' : 'Hidden',
+                      onChanged: (newValue) {
+                        context.read<TextCubit>().toggleVisibility();
+                      },
+                      items: <String>['Visible', 'Hidden']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+  }
+}
+
+// Define the state for the cubit
+class TextState {
+  final String text;
+  final bool isVisible;
+  final int number;
+
+  TextState(
+      {required this.text, required this.isVisible, required this.number});
+}
+
+// Define the cubit
+class TextCubit extends Cubit<TextState> {
+  TextCubit() : super(TextState(text: '', isVisible: true, number: 0));
+
+  // Update text value
+  void updateText(String newText) {
+    emit(TextState(
+        text: newText, isVisible: state.isVisible, number: state.number));
+  }
+
+  // Toggle visibility of the text field
+  void toggleVisibility() {
+    emit(TextState(
+        text: state.text, isVisible: !state.isVisible, number: state.number));
+  }
+
+  // Increment number
+  void increment() {
+    emit(TextState(
+        text: state.text,
+        isVisible: state.isVisible,
+        number: state.number + 1));
+  }
+
+  // Decrement number
+  void decrement() {
+    emit(TextState(
+        text: state.text,
+        isVisible: state.isVisible,
+        number: state.number - 1));
   }
 }
