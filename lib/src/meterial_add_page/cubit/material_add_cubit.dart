@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:warehouse/src/data/material_repository.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/meterial_add_state.dart';
+import 'package:warehouse/src/meterial_add_page/cubit/models/scaffold_part_model.dart';
 import 'package:warehouse/src/meterial_add_page/icon_label.dart';
 
 import 'models/helmet_model.dart';
@@ -13,11 +16,19 @@ class MaterialAddCubit extends Cubit<MaterialAddState> {
           MaterialAddState(
             data: DataItem(
               selectedCategory: null,
-              helmetModel: HelmetModel(name: '', quantity: 1),
+              helmetModel: HelmetModel(
+                name: '',
+                quantity: 1,
+              ),
               ladderModel: LadderModel(
                 name: '',
                 ladderLoadCapacityInKg: 0,
                 maximumWorkingHeightInCm: 0,
+              ),
+              scaffoldPartModel: ScaffoldPartModel(
+                name: '',
+                quantity: 1,
+                imageBytes: [],
               ),
               helmetIsVisible: false,
               ladderIsVisible: false,
@@ -46,7 +57,7 @@ class MaterialAddCubit extends Cubit<MaterialAddState> {
     emit(MaterialAddState(data: newData));
   }
 
-  void increment() {
+  void helmetQuantityIncrement() {
     final newData = state.data.copyWith(
       helmetModel: HelmetModel(
         name: state.data.helmetModel.name,
@@ -56,7 +67,7 @@ class MaterialAddCubit extends Cubit<MaterialAddState> {
     emit(MaterialAddState(data: newData));
   }
 
-  void decrement() {
+  void helmetQuantityDecrement() {
     final newData = state.data.copyWith(
       helmetModel: HelmetModel(
         name: state.data.helmetModel.name,
@@ -115,5 +126,60 @@ class MaterialAddCubit extends Cubit<MaterialAddState> {
       ladder.maximumWorkingHeightInCm,
       ladder.ladderLoadCapacityInKg,
     );
+  }
+
+  // SCAFFOLD PART:
+
+  void updateScaffoldPartName(String newText) {
+    final newData = state.data.copyWith(
+      scaffoldPartModel: ScaffoldPartModel(
+        name: newText,
+        quantity: state.data.scaffoldPartModel.quantity,
+        imageBytes: state.data.scaffoldPartModel.imageBytes,
+      ),
+    );
+    emit(MaterialAddState(data: newData));
+  }
+
+  void updateScaffoldPartImage(List<int> newImg) {
+    final newData = state.data.copyWith(
+      scaffoldPartModel: ScaffoldPartModel(
+        name: state.data.scaffoldPartModel.name,
+        quantity: state.data.scaffoldPartModel.quantity,
+        imageBytes: newImg,
+      ),
+    );
+    emit(MaterialAddState(data: newData));
+  }
+
+  Future<void> submitScaffoldPartData(ScaffoldPartModel scaffoldPart) async {
+    emit(DataIsSaving(data: state.data));
+    await materialRepository.addScaffoldPartItem(
+      scaffoldPart.name,
+      scaffoldPart.quantity,
+      Uint8List.fromList(scaffoldPart.imageBytes),
+    );
+  }
+
+  void scaffoldPartQuantityIncrement() {
+    final newData = state.data.copyWith(
+      scaffoldPartModel: ScaffoldPartModel(
+        name: state.data.scaffoldPartModel.name,
+        quantity: state.data.scaffoldPartModel.quantity + 1,
+        imageBytes: state.data.scaffoldPartModel.imageBytes,
+      ),
+    );
+    emit(MaterialAddState(data: newData));
+  }
+
+  void scaffoldPartQuantityDecrement() {
+    final newData = state.data.copyWith(
+      scaffoldPartModel: ScaffoldPartModel(
+        name: state.data.scaffoldPartModel.name,
+        quantity: state.data.scaffoldPartModel.quantity - 1,
+        imageBytes: state.data.scaffoldPartModel.imageBytes,
+      ),
+    );
+    emit(MaterialAddState(data: newData));
   }
 }

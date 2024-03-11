@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:warehouse/src/meterial_add_page/cubit/models/scaffold_part_model.dart';
 import 'package:warehouse/src/meterial_add_page/icon_label.dart';
 
 import 'models/helmet_model.dart';
@@ -29,8 +30,31 @@ class DataItem with _$DataItem {
     required MaterialCategory? selectedCategory,
     required HelmetModel helmetModel,
     required LadderModel ladderModel,
+    required ScaffoldPartModel scaffoldPartModel,
     required bool helmetIsVisible,
     required bool ladderIsVisible,
     required bool scaffoldPartIsVisible,
   }) = _DataItem;
 }
+
+
+// sealed class MaterialAddState extends Equatable {
+//   const MaterialAddState();
+// }
+
+// class DataSaving extends MaterialAddState {
+//   @override
+//   List<Object?> get props => [];
+// }
+
+// @freezed
+// class MaterialAddState with _$MaterialAddState {
+//   const factory MaterialAddState({
+//     required MaterialCategory? selectedCategory,
+//     required HelmetModel helmetModel,
+//     required LadderModel ladderModel,
+//     required bool helmetIsVisible,
+//     required bool ladderIsVisible,
+//     required bool scaffoldPartIsVisible,
+//   }) = _MaterialAddState;
+// }

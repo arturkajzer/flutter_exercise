@@ -19,6 +19,7 @@ mixin _$DataItem {
   MaterialCategory? get selectedCategory => throw _privateConstructorUsedError;
   HelmetModel get helmetModel => throw _privateConstructorUsedError;
   LadderModel get ladderModel => throw _privateConstructorUsedError;
+  ScaffoldPartModel get scaffoldPartModel => throw _privateConstructorUsedError;
   bool get helmetIsVisible => throw _privateConstructorUsedError;
   bool get ladderIsVisible => throw _privateConstructorUsedError;
   bool get scaffoldPartIsVisible => throw _privateConstructorUsedError;
@@ -37,6 +38,7 @@ abstract class $DataItemCopyWith<$Res> {
       {MaterialCategory? selectedCategory,
       HelmetModel helmetModel,
       LadderModel ladderModel,
+      ScaffoldPartModel scaffoldPartModel,
       bool helmetIsVisible,
       bool ladderIsVisible,
       bool scaffoldPartIsVisible});
@@ -58,6 +60,7 @@ class _$DataItemCopyWithImpl<$Res, $Val extends DataItem>
     Object? selectedCategory = freezed,
     Object? helmetModel = null,
     Object? ladderModel = null,
+    Object? scaffoldPartModel = null,
     Object? helmetIsVisible = null,
     Object? ladderIsVisible = null,
     Object? scaffoldPartIsVisible = null,
@@ -75,6 +78,10 @@ class _$DataItemCopyWithImpl<$Res, $Val extends DataItem>
           ? _value.ladderModel
           : ladderModel // ignore: cast_nullable_to_non_nullable
               as LadderModel,
+      scaffoldPartModel: null == scaffoldPartModel
+          ? _value.scaffoldPartModel
+          : scaffoldPartModel // ignore: cast_nullable_to_non_nullable
+              as ScaffoldPartModel,
       helmetIsVisible: null == helmetIsVisible
           ? _value.helmetIsVisible
           : helmetIsVisible // ignore: cast_nullable_to_non_nullable
@@ -103,6 +110,7 @@ abstract class _$$DataItemImplCopyWith<$Res>
       {MaterialCategory? selectedCategory,
       HelmetModel helmetModel,
       LadderModel ladderModel,
+      ScaffoldPartModel scaffoldPartModel,
       bool helmetIsVisible,
       bool ladderIsVisible,
       bool scaffoldPartIsVisible});
@@ -122,6 +130,7 @@ class __$$DataItemImplCopyWithImpl<$Res>
     Object? selectedCategory = freezed,
     Object? helmetModel = null,
     Object? ladderModel = null,
+    Object? scaffoldPartModel = null,
     Object? helmetIsVisible = null,
     Object? ladderIsVisible = null,
     Object? scaffoldPartIsVisible = null,
@@ -139,6 +148,10 @@ class __$$DataItemImplCopyWithImpl<$Res>
           ? _value.ladderModel
           : ladderModel // ignore: cast_nullable_to_non_nullable
               as LadderModel,
+      scaffoldPartModel: null == scaffoldPartModel
+          ? _value.scaffoldPartModel
+          : scaffoldPartModel // ignore: cast_nullable_to_non_nullable
+              as ScaffoldPartModel,
       helmetIsVisible: null == helmetIsVisible
           ? _value.helmetIsVisible
           : helmetIsVisible // ignore: cast_nullable_to_non_nullable
@@ -162,6 +175,7 @@ class _$DataItemImpl implements _DataItem {
       {required this.selectedCategory,
       required this.helmetModel,
       required this.ladderModel,
+      required this.scaffoldPartModel,
       required this.helmetIsVisible,
       required this.ladderIsVisible,
       required this.scaffoldPartIsVisible});
@@ -173,6 +187,8 @@ class _$DataItemImpl implements _DataItem {
   @override
   final LadderModel ladderModel;
   @override
+  final ScaffoldPartModel scaffoldPartModel;
+  @override
   final bool helmetIsVisible;
   @override
   final bool ladderIsVisible;
@@ -181,7 +197,7 @@ class _$DataItemImpl implements _DataItem {
 
   @override
   String toString() {
-    return 'DataItem(selectedCategory: $selectedCategory, helmetModel: $helmetModel, ladderModel: $ladderModel, helmetIsVisible: $helmetIsVisible, ladderIsVisible: $ladderIsVisible, scaffoldPartIsVisible: $scaffoldPartIsVisible)';
+    return 'DataItem(selectedCategory: $selectedCategory, helmetModel: $helmetModel, ladderModel: $ladderModel, scaffoldPartModel: $scaffoldPartModel, helmetIsVisible: $helmetIsVisible, ladderIsVisible: $ladderIsVisible, scaffoldPartIsVisible: $scaffoldPartIsVisible)';
   }
 
   @override
@@ -195,6 +211,8 @@ class _$DataItemImpl implements _DataItem {
                 other.helmetModel == helmetModel) &&
             (identical(other.ladderModel, ladderModel) ||
                 other.ladderModel == ladderModel) &&
+            (identical(other.scaffoldPartModel, scaffoldPartModel) ||
+                other.scaffoldPartModel == scaffoldPartModel) &&
             (identical(other.helmetIsVisible, helmetIsVisible) ||
                 other.helmetIsVisible == helmetIsVisible) &&
             (identical(other.ladderIsVisible, ladderIsVisible) ||
@@ -204,8 +222,15 @@ class _$DataItemImpl implements _DataItem {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, selectedCategory, helmetModel,
-      ladderModel, helmetIsVisible, ladderIsVisible, scaffoldPartIsVisible);
+  int get hashCode => Object.hash(
+      runtimeType,
+      selectedCategory,
+      helmetModel,
+      ladderModel,
+      scaffoldPartModel,
+      helmetIsVisible,
+      ladderIsVisible,
+      scaffoldPartIsVisible);
 
   @JsonKey(ignore: true)
   @override
@@ -219,6 +244,7 @@ abstract class _DataItem implements DataItem {
       {required final MaterialCategory? selectedCategory,
       required final HelmetModel helmetModel,
       required final LadderModel ladderModel,
+      required final ScaffoldPartModel scaffoldPartModel,
       required final bool helmetIsVisible,
       required final bool ladderIsVisible,
       required final bool scaffoldPartIsVisible}) = _$DataItemImpl;
@@ -229,6 +255,8 @@ abstract class _DataItem implements DataItem {
   HelmetModel get helmetModel;
   @override
   LadderModel get ladderModel;
+  @override
+  ScaffoldPartModel get scaffoldPartModel;
   @override
   bool get helmetIsVisible;
   @override

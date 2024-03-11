@@ -1,10 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/material_add_cubit.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/meterial_add_state.dart';
+import 'package:warehouse/src/meterial_add_page/cubit/models/scaffold_part_model.dart';
 import 'package:warehouse/src/meterial_add_page/icon_label.dart';
 import 'package:warehouse/src/navigation/app_page.dart';
 
@@ -33,6 +37,7 @@ class _MaterialAddPageView extends HookWidget {
     final ladderNameEditingController = useTextEditingController();
     final ladderLoadCapacityEditingController = useTextEditingController();
     final ladderMaximumHeightEditingController = useTextEditingController();
+    final scaffoldPartNameEditingController = useTextEditingController();
 
     final formKey = GlobalKey<FormState>();
 
@@ -47,9 +52,6 @@ class _MaterialAddPageView extends HookWidget {
       body: BlocBuilder<MaterialAddCubit, MaterialAddState>(
         bloc: materialAddCubit,
         builder: (context, state) {
-          helmetNameEditingController.text = state.data.helmetModel.name;
-          ladderNameEditingController.text = state.data.ladderModel.name;
-
           return Padding(
             padding: const EdgeInsets.all(10),
             child: LoadingOverlay(
@@ -84,7 +86,13 @@ class _MaterialAddPageView extends HookWidget {
                         ladderLoadCapacityEditingController,
                         ladderMaximumHeightEditingController,
                       ),
-                      _buildScaffoldPartSection(state),
+                      _buildScaffoldPartSection(
+                        materialAddCubit,
+                        state,
+                        context,
+                        formKey,
+                        scaffoldPartNameEditingController,
+                      ),
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -99,7 +107,9 @@ class _MaterialAddPageView extends HookWidget {
 }
 
 Widget _buildCategoryDropdownButton(
-    MaterialAddState state, MaterialAddCubit materialAddCubit) {
+  MaterialAddState state,
+  MaterialAddCubit materialAddCubit,
+) {
   return DropdownButton<MaterialCategory>(
     hint: const Text('Please, select item'),
     value: state.data.selectedCategory,
@@ -148,14 +158,14 @@ Widget _buildHelmetSection(
           children: [
             IconButton(
               icon: const Icon(Icons.remove),
-              onPressed: materialAddCubit.decrement,
+              onPressed: materialAddCubit.helmetQuantityDecrement,
             ),
             const SizedBox(width: 10),
             Text('${state.data.helmetModel.quantity}'),
             const SizedBox(width: 10),
             IconButton(
               icon: const Icon(Icons.add),
-              onPressed: materialAddCubit.increment,
+              onPressed: materialAddCubit.helmetQuantityIncrement,
             ),
           ],
         ),
@@ -274,14 +284,109 @@ Widget _buildLadderSection(
 }
 
 Widget _buildScaffoldPartSection(
+  MaterialAddCubit materialAddCubit,
   MaterialAddState state,
+  BuildContext context,
+  GlobalKey<FormState> formKey,
+  TextEditingController scaffoldPartNameEditingController,
 ) {
   return Visibility(
     visible: state.data.scaffoldPartIsVisible,
-    child: const Column(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('SCAFFOLD PART'),
+        const Text('Name:'),
+        TextFormField(
+          controller: scaffoldPartNameEditingController,
+          onChanged: materialAddCubit.updateScaffoldPartName,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return 'Name is required ';
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 20),
+        const Text('Quantity:'),
+        Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.remove),
+              onPressed: materialAddCubit.scaffoldPartQuantityDecrement,
+            ),
+            const SizedBox(width: 10),
+            Text('${state.data.scaffoldPartModel.quantity}'),
+            const SizedBox(width: 10),
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: materialAddCubit.scaffoldPartQuantityIncrement,
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        const Text('Photo: '),
+        GestureDetector(
+          onTap: () async {
+            final imageBytes = await _pickImageFromGallery();
+            materialAddCubit.updateScaffoldPartImage(imageBytes);
+          },
+          child: state.data.scaffoldPartModel.imageBytes.isNotEmpty
+              ? Image.memory(
+                  Uint8List.fromList(state.data.scaffoldPartModel.imageBytes),
+                  width: 200,
+                  height: 200,
+                )
+              : Container(
+                  width: 150,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(
+                    Icons.camera_alt,
+                    size: 50,
+                    color: Colors.black,
+                  ),
+                ),
+        ),
+        const SizedBox(height: 20),
+        Center(
+          child: MaterialButton(
+            color: Theme.of(context).colorScheme.primary,
+            onPressed: () async {
+              if (formKey.currentState!.validate()) {
+                await materialAddCubit.submitScaffoldPartData(
+                  ScaffoldPartModel(
+                    name: state.data.scaffoldPartModel.name,
+                    quantity: state.data.scaffoldPartModel.quantity,
+                    imageBytes: state.data.scaffoldPartModel.imageBytes,
+                  ),
+                );
+                context.pop<bool>(true);
+              }
+            },
+            child: const Text(
+              'Add scaffold part',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
       ],
     ),
   );
+}
+
+Future<List<int>> _pickImageFromGallery() async {
+  final picker = ImagePicker();
+  final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+  if (pickedImage != null) {
+    final bytes = await pickedImage.readAsBytes();
+    return bytes;
+  } else {
+    return [];
+  }
 }
