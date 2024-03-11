@@ -6,61 +6,61 @@ import 'package:warehouse/src/meterial_add_page/icon_label.dart';
 class MaterialAddCubit extends Cubit<MaterialAddState> {
   MaterialAddCubit({
     required this.materialRepository,
-  }) : super(MaterialAddState(
+  }) : super(
+          MaterialAddState(
             selectedCategory: null,
-            helmetModel: HelmetModel(name: '', quantity: ''),
-            helmetIsVisible: true,
+            helmetModel: HelmetModel(name: '', quantity: 0),
+            ladderModel: LadderModel(
+                name: '',
+                ladderLoadCapacityInKg: 0,
+                maximumWorkingHeightInCm: 0),
+            helmetIsVisible: false,
             ladderIsVisible: false,
             scaffoldPartIsVisible: false,
-            number: 0));
+          ),
+        );
 
   final MaterialRepository materialRepository;
 
-  void updateText(String newText) {
-    emit(MaterialAddState(
-        selectedCategory: state.selectedCategory,
-        helmetModel: HelmetModel(name: newText, quantity: ''),
-        helmetIsVisible: state.helmetIsVisible,
-        ladderIsVisible: false,
-        scaffoldPartIsVisible: false,
-        number: state.number));
+  void toggleVisibility(MaterialCategory? selectedCategory) {
+    final newState = state.copyWith(
+      selectedCategory: selectedCategory,
+      helmetIsVisible: selectedCategory == MaterialCategory.helmet,
+      ladderIsVisible: selectedCategory == MaterialCategory.ladder,
+      scaffoldPartIsVisible: selectedCategory == MaterialCategory.scaffoldPart,
+    );
+    emit(newState);
   }
 
-  void toggleVisibility(MaterialCategory? selectedCategory) {
-    emit(MaterialAddState(
-        selectedCategory: selectedCategory,
-        helmetModel: state.helmetModel,
-        helmetIsVisible: selectedCategory == MaterialCategory.helmet,
-        ladderIsVisible: selectedCategory == MaterialCategory.ladder,
-        scaffoldPartIsVisible:
-            selectedCategory == MaterialCategory.scaffoldPart,
-        number: state.number));
+  void updateHelmetName(String newText) {
+    final newState = state.copyWith(
+      helmetModel:
+          HelmetModel(name: newText, quantity: state.helmetModel.quantity),
+    );
+    emit(newState);
   }
 
   void increment() {
-    emit(MaterialAddState(
-        selectedCategory: state.selectedCategory,
-        helmetModel: state.helmetModel,
-        helmetIsVisible: state.helmetIsVisible,
-        ladderIsVisible: state.ladderIsVisible,
-        scaffoldPartIsVisible: state.scaffoldPartIsVisible,
-        number: state.number + 1));
+    final newState = state.copyWith(
+      helmetModel: HelmetModel(
+        name: state.helmetModel.name,
+        quantity: state.helmetModel.quantity + 1,
+      ),
+    );
+    emit(newState);
   }
 
   void decrement() {
-    emit(
-      MaterialAddState(
-        selectedCategory: state.selectedCategory,
-        helmetModel: state.helmetModel,
-        helmetIsVisible: state.helmetIsVisible,
-        ladderIsVisible: state.ladderIsVisible,
-        scaffoldPartIsVisible: state.scaffoldPartIsVisible,
-        number: state.number - 1,
+    final newState = state.copyWith(
+      helmetModel: HelmetModel(
+        name: state.helmetModel.name,
+        quantity: state.helmetModel.quantity - 1,
       ),
     );
+    emit(newState);
   }
 
-  Future<void> submitHelmetData() async {
+  Future<void> submitHelmetData(HelmetModel helmet) async {
     // if (state is! ShowDataState) {
     //   return;
     // }
@@ -70,8 +70,25 @@ class MaterialAddCubit extends Cubit<MaterialAddState> {
     // final newData = data.copyWith();
 
     // emit(DataSavingState(materialAddData: newData));
-    
-    await materialRepository.addHelmetItem('test', 1);
+
+    await materialRepository.addHelmetItem(helmet.name, helmet.quantity);
     // emit(DataSavedState(materialAddData: newData));
+  }
+
+  //LADDER:
+
+  void updateLadderName(String newText) {
+    final newState = state.copyWith(
+      ladderModel: LadderModel(
+        name: newText,
+        ladderLoadCapacityInKg: state.ladderModel.ladderLoadCapacityInKg,
+        maximumWorkingHeightInCm: state.ladderModel.maximumWorkingHeightInCm,
+      ),
+    );
+    emit(newState);
+  }
+
+  Future<void> submitLadderData(LadderModel ladder) async {
+    await materialRepository.addLadderItem(ladder.name, ladder.maximumWorkingHeightInCm, ladder.ladderLoadCapacityInKg);
   }
 }

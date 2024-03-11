@@ -25,8 +25,10 @@ class _MaterialAddPageView extends HookWidget {
       ),
     );
 
-    final nameEditingController = useTextEditingController();
-    final ladderEditingController = useTextEditingController();
+    final helmetNameEditingController = useTextEditingController();
+    final ladderNameEditingController = useTextEditingController();
+
+    final formKey = GlobalKey<FormState>();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -39,112 +41,177 @@ class _MaterialAddPageView extends HookWidget {
       body: BlocBuilder<MaterialAddCubit, MaterialAddState>(
         bloc: materialAddCubit,
         builder: (context, state) {
-          nameEditingController.text = state.helmetModel.name;
-          ladderEditingController.text = 'test ladder';
+          helmetNameEditingController.text = state.helmetModel.name;
+          ladderNameEditingController.text = state.ladderModel.name;
 
           return Padding(
             padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Center(
-                  child: Text(
-                    'Select the category and complete the form to add a new item to the warehouse',
-                  ),
-                ),
-                const SizedBox(height: 20),
-                DropdownButton<MaterialCategory>(
-                  hint: const Text('Please, select item'),
-                  value: state.selectedCategory,
-                  onChanged: materialAddCubit.toggleVisibility,
-                  items: MaterialCategory.values.map((iconLabel) {
-                    return DropdownMenuItem<MaterialCategory>(
-                      value: iconLabel,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(iconLabel.icon),
-                          const SizedBox(width: 10),
-                          Text(iconLabel.label),
-                        ],
+            child: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Center(
+                      child: Text(
+                        'Select the category and complete the form to add a new item to the warehouse',
                       ),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 20),
-                Visibility(
-                  visible: state.helmetIsVisible,
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: nameEditingController,
-                        onChanged: materialAddCubit.updateText,
-                        decoration:
-                            const InputDecoration(labelText: 'Enter Text'),
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
+                    ),
+                    const SizedBox(height: 20),
+                    DropdownButton<MaterialCategory>(
+                      hint: const Text('Please, select item'),
+                      value: state.selectedCategory,
+                      onChanged: materialAddCubit.toggleVisibility,
+                      items: MaterialCategory.values.map((iconLabel) {
+                        return DropdownMenuItem<MaterialCategory>(
+                          value: iconLabel,
+                          child: Row(
+                            children: <Widget>[
+                              Icon(iconLabel.icon),
+                              const SizedBox(width: 10),
+                              Text(iconLabel.label),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 20),
+                    Visibility(
+                      visible: state.helmetIsVisible,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ElevatedButton(
-                            onPressed: materialAddCubit.decrement,
-                            child: const Icon(Icons.remove),
+                          const Text('Name:'),
+                          TextFormField(
+                            controller: helmetNameEditingController,
+                            onChanged: materialAddCubit.updateHelmetName,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Name is required ';
+                              }
+                              return null;
+                            },
                           ),
-                          const SizedBox(width: 10),
-                          Text('${state.number}'),
-                          const SizedBox(width: 10),
-                          ElevatedButton(
-                            onPressed: materialAddCubit.increment,
-                            child: const Icon(Icons.add),
+                          const SizedBox(height: 20),
+                          const Text('Quantity:'),
+                          Row(
+                            children: [
+                              ElevatedButton(
+                                onPressed: materialAddCubit.decrement,
+                                child: const Icon(Icons.remove),
+                              ),
+                              const SizedBox(width: 10),
+                              Text('${state.helmetModel.quantity}'),
+                              const SizedBox(width: 10),
+                              ElevatedButton(
+                                onPressed: materialAddCubit.increment,
+                                child: const Icon(Icons.add),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Center(
+                            child: MaterialButton(
+                              color: Theme.of(context).colorScheme.primary,
+                              onPressed: () async {
+                                await materialAddCubit.submitHelmetData(
+                                  HelmetModel(
+                                    name: state.helmetModel.name,
+                                    quantity: state.helmetModel.quantity,
+                                  ),
+                                );
+                                context.pop<bool>(true);
+                              },
+                              child: const Text(
+                                'Add helmet',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                      MaterialButton(
-                        color: Theme.of(context).colorScheme.primary,
-                        onPressed: () async {
-                          await materialAddCubit.submitHelmetData();
-                          context.pop<bool>(true);
-                        },
-                        child: const Text(
-                          'Add helmet',
-                          style: TextStyle(
-                            color: Colors.white,
+                    ),
+                    Visibility(
+                      visible: state.ladderIsVisible,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Name:'),
+                          TextFormField(
+                            controller: ladderNameEditingController,
+                            onChanged: materialAddCubit.updateLadderName,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Name is required ';
+                              }
+                              return null;
+                            },
                           ),
-                        ),
+                          const SizedBox(height: 20),
+                          const Text('Maximum working height:'),
+                          TextFormField(
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Maximum working height is required ';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          const Text('Ladder load capacity:'),
+                          TextFormField(
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Ladder load capacity is required ';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          Center(
+                            child: MaterialButton(
+                              color: Theme.of(context).colorScheme.primary,
+                              onPressed: () async {
+                                if (formKey.currentState!.validate()) {
+                                  await materialAddCubit.submitLadderData(
+                                    LadderModel(
+                                      name: state.ladderModel.name,
+                                      ladderLoadCapacityInKg: 0,
+                                      maximumWorkingHeightInCm: 0
+                                    ),
+                                  );
+                                  context.pop<bool>(true);
+                                }
+                              },
+                              child: const Text(
+                                'Add ladder',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Visibility(
+                      visible: state.scaffoldPartIsVisible,
+                      child: const Column(
+                        children: [
+                          Text('SCAFFOLD PART'),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                 ),
-                Visibility(
-                  visible: state.ladderIsVisible,
-                  child: const Column(
-                    children: [
-                      Text('LADDER'),
-                    ],
-                  ),
-                ),
-                Visibility(
-                  visible: state.scaffoldPartIsVisible,
-                  child: const Column(
-                    children: [
-                      Text('SCAFFOLD PART'),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-              ],
+              ),
             ),
           );
         },
       ),
     );
   }
-
-  // @override
-  // void dispose() {
-  //   _nameEditingController.dispose();
-  //   _ladderEditingController.dispose();
-  // }
 }
-
-// Define the state for the cubit
-
-

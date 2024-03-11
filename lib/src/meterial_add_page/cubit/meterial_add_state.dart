@@ -1,31 +1,19 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:warehouse/src/meterial_add_page/icon_label.dart';
 
-class MaterialAddState extends Equatable {
-  const MaterialAddState({
-    required this.selectedCategory,
-    required this.helmetModel,
-    required this.helmetIsVisible,
-    required this.ladderIsVisible,
-    required this.scaffoldPartIsVisible,
-    required this.number,
-  });
-  // final String text;
-  final HelmetModel helmetModel;
-  final bool helmetIsVisible;
-  final bool ladderIsVisible;
-  final bool scaffoldPartIsVisible;
-  final MaterialCategory? selectedCategory;
-  final int number;
-  
-  @override
-  List<Object?> get props => [];
+part 'meterial_add_state.freezed.dart';
+
+@freezed
+class MaterialAddState with _$MaterialAddState {
+  const factory MaterialAddState({
+    required MaterialCategory? selectedCategory,
+    required HelmetModel helmetModel,
+    required LadderModel ladderModel,
+    required bool helmetIsVisible,
+    required bool ladderIsVisible,
+    required bool scaffoldPartIsVisible,
+  }) = _MaterialAddState;
 }
-
-// class DataSavingState extends MaterialAddState {
-//   const DataSavingState({required super.selectedCategory, required super.helmetModel, required super.helmetIsVisible, required super.ladderIsVisible, required super.scaffoldPartIsVisible, required super.number});
-// }
-
 
 class HelmetModel {
   HelmetModel({
@@ -34,5 +22,17 @@ class HelmetModel {
   });
 
   final String name;
-  final String quantity;
+  final int quantity;
+}
+
+class LadderModel {
+  LadderModel({
+    required this.name,
+    required this.maximumWorkingHeightInCm,
+    required this.ladderLoadCapacityInKg,
+  });
+
+  final String name;
+  final int maximumWorkingHeightInCm;
+  final int ladderLoadCapacityInKg;
 }
