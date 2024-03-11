@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
+import 'package:warehouse/src/meterial_add_page/cubit/material_add_cubit.dart';
+import 'package:warehouse/src/meterial_add_page/cubit/meterial_add_state.dart';
 import 'package:warehouse/src/navigation/app_page.dart';
 
 class MaterialAddPage extends AppPage {
@@ -17,13 +19,13 @@ class _MaterialAddPageView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TextCubit(),
+      create: (context) => MaterialAddCubit(),
       child: Scaffold(
         appBar: AppBar(title: Text("Cubit Example")),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            BlocBuilder<TextCubit, TextState>(
+            BlocBuilder<MaterialAddCubit, TextState>(
               builder: (context, state) {
                 return Column(
                   children: [
@@ -34,7 +36,9 @@ class _MaterialAddPageView extends HookWidget {
                           TextField(
                             controller: _textEditingController,
                             onChanged: (value) {
-                              context.read<TextCubit>().updateText(value);
+                              context
+                                  .read<MaterialAddCubit>()
+                                  .updateText(value);
                             },
                             decoration:
                                 InputDecoration(labelText: 'Enter Text'),
@@ -45,7 +49,7 @@ class _MaterialAddPageView extends HookWidget {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  context.read<TextCubit>().decrement();
+                                  context.read<MaterialAddCubit>().decrement();
                                 },
                                 child: Icon(Icons.remove),
                               ),
@@ -54,7 +58,7 @@ class _MaterialAddPageView extends HookWidget {
                               SizedBox(width: 10),
                               ElevatedButton(
                                 onPressed: () {
-                                  context.read<TextCubit>().increment();
+                                  context.read<MaterialAddCubit>().increment();
                                 },
                                 child: Icon(Icons.add),
                               ),
@@ -67,7 +71,7 @@ class _MaterialAddPageView extends HookWidget {
                     DropdownButton<String>(
                       value: state.isVisible ? 'Visible' : 'Hidden',
                       onChanged: (newValue) {
-                        context.read<TextCubit>().toggleVisibility();
+                        context.read<MaterialAddCubit>().toggleVisibility();
                       },
                       items: <String>['Visible', 'Hidden']
                           .map<DropdownMenuItem<String>>((String value) {
@@ -94,44 +98,5 @@ class _MaterialAddPageView extends HookWidget {
 }
 
 // Define the state for the cubit
-class TextState {
-  final String text;
-  final bool isVisible;
-  final int number;
 
-  TextState(
-      {required this.text, required this.isVisible, required this.number});
-}
 
-// Define the cubit
-class TextCubit extends Cubit<TextState> {
-  TextCubit() : super(TextState(text: '', isVisible: true, number: 0));
-
-  // Update text value
-  void updateText(String newText) {
-    emit(TextState(
-        text: newText, isVisible: state.isVisible, number: state.number));
-  }
-
-  // Toggle visibility of the text field
-  void toggleVisibility() {
-    emit(TextState(
-        text: state.text, isVisible: !state.isVisible, number: state.number));
-  }
-
-  // Increment number
-  void increment() {
-    emit(TextState(
-        text: state.text,
-        isVisible: state.isVisible,
-        number: state.number + 1));
-  }
-
-  // Decrement number
-  void decrement() {
-    emit(TextState(
-        text: state.text,
-        isVisible: state.isVisible,
-        number: state.number - 1));
-  }
-}
