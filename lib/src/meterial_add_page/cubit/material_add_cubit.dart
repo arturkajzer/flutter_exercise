@@ -1,35 +1,75 @@
-// Define the cubit
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/meterial_add_state.dart';
+import 'package:warehouse/src/meterial_add_page/icon_label.dart';
 
-class MaterialAddCubit extends Cubit<TextState> {
-  MaterialAddCubit() : super(TextState(text: '', isVisible: true, number: 0));
+class MaterialAddCubit extends Cubit<MaterialAddState> {
+  MaterialAddCubit()
+      : super(MaterialAddState(
+            selectedCategory: null,
+            helmetModel: HelmetModel(name: '', quantity: ''),
+            helmetIsVisible: true,
+            ladderIsVisible: false,
+            number: 0));
 
-  // Update text value
   void updateText(String newText) {
-    emit(TextState(
-        text: newText, isVisible: state.isVisible, number: state.number));
+    emit(MaterialAddState(
+        selectedCategory: state.selectedCategory,
+        helmetModel: HelmetModel(name: newText, quantity: ''),
+        helmetIsVisible: state.helmetIsVisible,
+        ladderIsVisible: false,
+        number: state.number));
   }
 
-  // Toggle visibility of the text field
-  void toggleVisibility() {
-    emit(TextState(
-        text: state.text, isVisible: !state.isVisible, number: state.number));
+  void toggleVisibility(MaterialCategory? selectedCategory) {
+    final bool isHelmetVisible;
+    final bool isLadderVisible;
+    final bool isScaffoldPartVisible;
+
+    switch (selectedCategory) {
+      case null:
+        isHelmetVisible = false;
+        isLadderVisible = false;
+        isScaffoldPartVisible = false;
+      case MaterialCategory.helmet:
+        isHelmetVisible = true;
+        isLadderVisible = false;
+        isScaffoldPartVisible = false;
+      case MaterialCategory.ladder:
+        isHelmetVisible = false;
+        isLadderVisible = true;
+        isScaffoldPartVisible = false;
+      case MaterialCategory.scaffoldPart:
+        isHelmetVisible = false;
+        isLadderVisible = false;
+        isScaffoldPartVisible = true;
+    }
+
+    emit(MaterialAddState(
+        selectedCategory: selectedCategory,
+        helmetModel: state.helmetModel,
+        helmetIsVisible: isHelmetVisible,
+        ladderIsVisible: isLadderVisible,
+        number: state.number));
   }
 
-  // Increment number
   void increment() {
-    emit(TextState(
-        text: state.text,
-        isVisible: state.isVisible,
+    emit(MaterialAddState(
+        selectedCategory: state.selectedCategory,
+        helmetModel: state.helmetModel,
+        helmetIsVisible: state.helmetIsVisible,
+        ladderIsVisible: state.ladderIsVisible,
         number: state.number + 1));
   }
 
-  // Decrement number
   void decrement() {
-    emit(TextState(
-        text: state.text,
-        isVisible: state.isVisible,
-        number: state.number - 1));
+    emit(
+      MaterialAddState(
+        selectedCategory: state.selectedCategory,
+        helmetModel: state.helmetModel,
+        helmetIsVisible: state.helmetIsVisible,
+        ladderIsVisible: state.ladderIsVisible,
+        number: state.number - 1,
+      ),
+    );
   }
 }
