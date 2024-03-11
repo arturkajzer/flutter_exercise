@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$MaterialAddState {
+mixin _$DataItem {
   MaterialCategory? get selectedCategory => throw _privateConstructorUsedError;
   HelmetModel get helmetModel => throw _privateConstructorUsedError;
   LadderModel get ladderModel => throw _privateConstructorUsedError;
@@ -24,15 +24,14 @@ mixin _$MaterialAddState {
   bool get scaffoldPartIsVisible => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $MaterialAddStateCopyWith<MaterialAddState> get copyWith =>
+  $DataItemCopyWith<DataItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $MaterialAddStateCopyWith<$Res> {
-  factory $MaterialAddStateCopyWith(
-          MaterialAddState value, $Res Function(MaterialAddState) then) =
-      _$MaterialAddStateCopyWithImpl<$Res, MaterialAddState>;
+abstract class $DataItemCopyWith<$Res> {
+  factory $DataItemCopyWith(DataItem value, $Res Function(DataItem) then) =
+      _$DataItemCopyWithImpl<$Res, DataItem>;
   @useResult
   $Res call(
       {MaterialCategory? selectedCategory,
@@ -44,9 +43,9 @@ abstract class $MaterialAddStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$MaterialAddStateCopyWithImpl<$Res, $Val extends MaterialAddState>
-    implements $MaterialAddStateCopyWith<$Res> {
-  _$MaterialAddStateCopyWithImpl(this._value, this._then);
+class _$DataItemCopyWithImpl<$Res, $Val extends DataItem>
+    implements $DataItemCopyWith<$Res> {
+  _$DataItemCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -93,11 +92,11 @@ class _$MaterialAddStateCopyWithImpl<$Res, $Val extends MaterialAddState>
 }
 
 /// @nodoc
-abstract class _$$MaterialAddStateImplCopyWith<$Res>
-    implements $MaterialAddStateCopyWith<$Res> {
-  factory _$$MaterialAddStateImplCopyWith(_$MaterialAddStateImpl value,
-          $Res Function(_$MaterialAddStateImpl) then) =
-      __$$MaterialAddStateImplCopyWithImpl<$Res>;
+abstract class _$$DataItemImplCopyWith<$Res>
+    implements $DataItemCopyWith<$Res> {
+  factory _$$DataItemImplCopyWith(
+          _$DataItemImpl value, $Res Function(_$DataItemImpl) then) =
+      __$$DataItemImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -110,11 +109,11 @@ abstract class _$$MaterialAddStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$MaterialAddStateImplCopyWithImpl<$Res>
-    extends _$MaterialAddStateCopyWithImpl<$Res, _$MaterialAddStateImpl>
-    implements _$$MaterialAddStateImplCopyWith<$Res> {
-  __$$MaterialAddStateImplCopyWithImpl(_$MaterialAddStateImpl _value,
-      $Res Function(_$MaterialAddStateImpl) _then)
+class __$$DataItemImplCopyWithImpl<$Res>
+    extends _$DataItemCopyWithImpl<$Res, _$DataItemImpl>
+    implements _$$DataItemImplCopyWith<$Res> {
+  __$$DataItemImplCopyWithImpl(
+      _$DataItemImpl _value, $Res Function(_$DataItemImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -127,7 +126,7 @@ class __$$MaterialAddStateImplCopyWithImpl<$Res>
     Object? ladderIsVisible = null,
     Object? scaffoldPartIsVisible = null,
   }) {
-    return _then(_$MaterialAddStateImpl(
+    return _then(_$DataItemImpl(
       selectedCategory: freezed == selectedCategory
           ? _value.selectedCategory
           : selectedCategory // ignore: cast_nullable_to_non_nullable
@@ -158,8 +157,8 @@ class __$$MaterialAddStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MaterialAddStateImpl implements _MaterialAddState {
-  const _$MaterialAddStateImpl(
+class _$DataItemImpl implements _DataItem {
+  const _$DataItemImpl(
       {required this.selectedCategory,
       required this.helmetModel,
       required this.ladderModel,
@@ -182,14 +181,14 @@ class _$MaterialAddStateImpl implements _MaterialAddState {
 
   @override
   String toString() {
-    return 'MaterialAddState(selectedCategory: $selectedCategory, helmetModel: $helmetModel, ladderModel: $ladderModel, helmetIsVisible: $helmetIsVisible, ladderIsVisible: $ladderIsVisible, scaffoldPartIsVisible: $scaffoldPartIsVisible)';
+    return 'DataItem(selectedCategory: $selectedCategory, helmetModel: $helmetModel, ladderModel: $ladderModel, helmetIsVisible: $helmetIsVisible, ladderIsVisible: $ladderIsVisible, scaffoldPartIsVisible: $scaffoldPartIsVisible)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MaterialAddStateImpl &&
+            other is _$DataItemImpl &&
             (identical(other.selectedCategory, selectedCategory) ||
                 other.selectedCategory == selectedCategory) &&
             (identical(other.helmetModel, helmetModel) ||
@@ -211,19 +210,18 @@ class _$MaterialAddStateImpl implements _MaterialAddState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MaterialAddStateImplCopyWith<_$MaterialAddStateImpl> get copyWith =>
-      __$$MaterialAddStateImplCopyWithImpl<_$MaterialAddStateImpl>(
-          this, _$identity);
+  _$$DataItemImplCopyWith<_$DataItemImpl> get copyWith =>
+      __$$DataItemImplCopyWithImpl<_$DataItemImpl>(this, _$identity);
 }
 
-abstract class _MaterialAddState implements MaterialAddState {
-  const factory _MaterialAddState(
+abstract class _DataItem implements DataItem {
+  const factory _DataItem(
       {required final MaterialCategory? selectedCategory,
       required final HelmetModel helmetModel,
       required final LadderModel ladderModel,
       required final bool helmetIsVisible,
       required final bool ladderIsVisible,
-      required final bool scaffoldPartIsVisible}) = _$MaterialAddStateImpl;
+      required final bool scaffoldPartIsVisible}) = _$DataItemImpl;
 
   @override
   MaterialCategory? get selectedCategory;
@@ -239,6 +237,6 @@ abstract class _MaterialAddState implements MaterialAddState {
   bool get scaffoldPartIsVisible;
   @override
   @JsonKey(ignore: true)
-  _$$MaterialAddStateImplCopyWith<_$MaterialAddStateImpl> get copyWith =>
+  _$$DataItemImplCopyWith<_$DataItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
