@@ -8,6 +8,9 @@ import 'package:warehouse/src/meterial_add_page/cubit/meterial_add_state.dart';
 import 'package:warehouse/src/meterial_add_page/icon_label.dart';
 import 'package:warehouse/src/navigation/app_page.dart';
 
+import 'cubit/models/helmet_model.dart';
+import 'cubit/models/ladder_model.dart';
+
 class MaterialAddPage extends AppPage {
   MaterialAddPage()
       : super(
@@ -50,7 +53,7 @@ class _MaterialAddPageView extends HookWidget {
           return Padding(
             padding: const EdgeInsets.all(10),
             child: LoadingOverlay(
-            isLoading: state is DataIsSaving,
+              isLoading: state is DataIsSaving,
               child: SingleChildScrollView(
                 child: Form(
                   key: formKey,
@@ -123,7 +126,8 @@ class _MaterialAddPageView extends HookWidget {
                                     await materialAddCubit.submitHelmetData(
                                       HelmetModel(
                                         name: state.data.helmetModel.name,
-                                        quantity: state.data.helmetModel.quantity,
+                                        quantity:
+                                            state.data.helmetModel.quantity,
                                       ),
                                     );
                                     context.pop<bool>(true);
@@ -162,8 +166,8 @@ class _MaterialAddPageView extends HookWidget {
                               controller: ladderMaximumHeightEditingController,
                               keyboardType: TextInputType.number,
                               onChanged: (value) {
-                                materialAddCubit
-                                    .updateLadderMaximumHeight(int.parse(value));
+                                materialAddCubit.updateLadderMaximumHeight(
+                                    int.parse(value));
                               },
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
@@ -199,8 +203,10 @@ class _MaterialAddPageView extends HookWidget {
                                         name: state.data.ladderModel.name,
                                         ladderLoadCapacityInKg: state.data
                                             .ladderModel.ladderLoadCapacityInKg,
-                                        maximumWorkingHeightInCm: state.data
-                                            .ladderModel.maximumWorkingHeightInCm,
+                                        maximumWorkingHeightInCm: state
+                                            .data
+                                            .ladderModel
+                                            .maximumWorkingHeightInCm,
                                       ),
                                     );
                                     context.pop<bool>(true);

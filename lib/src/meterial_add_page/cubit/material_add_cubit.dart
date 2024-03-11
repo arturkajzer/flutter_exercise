@@ -3,6 +3,9 @@ import 'package:warehouse/src/data/material_repository.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/meterial_add_state.dart';
 import 'package:warehouse/src/meterial_add_page/icon_label.dart';
 
+import 'models/helmet_model.dart';
+import 'models/ladder_model.dart';
+
 class MaterialAddCubit extends Cubit<MaterialAddState> {
   MaterialAddCubit({
     required this.materialRepository,
