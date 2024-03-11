@@ -1,29 +1,25 @@
 import 'package:equatable/equatable.dart';
-import 'package:warehouse/src/meterial_add_page/icon_label.dart';
+import 'package:warehouse/src/meterial_add_page/cubit/meterial_add_data.dart';
 
 class MaterialAddState extends Equatable {
-  const MaterialAddState({required this.selectedCategory});
+  const MaterialAddState({
+    required this.materialAddData,
+  });
 
-  final MaterialCategory? selectedCategory;
+  final MaterialAddData materialAddData;
 
   @override
-  List<Object?> get props => [selectedCategory];
-
-  // MaterialAddState copyWith({MaterialCategory? selectedCategory}) {
-  //   return MaterialAddState(
-  //     selectedCategory: selectedCategory ?? this.selectedCategory,
-  //   );
-  // }
+  List<Object?> get props => [materialAddData];
 }
 
 class ShowDataState extends MaterialAddState {
-  const ShowDataState({required super.selectedCategory});
+  const ShowDataState({required super.materialAddData});
 }
 
 class DataSavingState extends MaterialAddState {
-  const DataSavingState({required super.selectedCategory});
+  const DataSavingState({required super.materialAddData});
 }
 
 class DataSavedState extends MaterialAddState {
-  const DataSavedState({required super.selectedCategory});
+  const DataSavedState({required super.materialAddData});
 }

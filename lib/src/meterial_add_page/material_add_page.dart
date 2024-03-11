@@ -47,7 +47,7 @@ class _MaterialAddPageView extends HookWidget {
         child: BlocBuilder<MaterialAddCubit, MaterialAddState>(
           bloc: materialAddCubit,
           builder: (context, state) {
-            final selectedCategory = state.selectedCategory;
+            final selectedCategory = state.materialAddData.selectedCategory;
 
             return Padding(
               padding: const EdgeInsets.all(10),
