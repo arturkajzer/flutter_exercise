@@ -10,7 +10,7 @@ import 'package:warehouse/src/navigation/app_page.dart';
 class MaterialAddPage extends AppPage {
   MaterialAddPage()
       : super(
-          builder: (context) => _MaterialAddPageView(),
+          builder: (context) => const _MaterialAddPageView(),
         );
 }
 
@@ -27,6 +27,8 @@ class _MaterialAddPageView extends HookWidget {
 
     final helmetNameEditingController = useTextEditingController();
     final ladderNameEditingController = useTextEditingController();
+    final ladderLoadCapacityEditingController = useTextEditingController();
+    final ladderMaximumHeightEditingController = useTextEditingController();
 
     final formKey = GlobalKey<FormState>();
 
@@ -96,16 +98,16 @@ class _MaterialAddPageView extends HookWidget {
                           const Text('Quantity:'),
                           Row(
                             children: [
-                              ElevatedButton(
+                              IconButton(
+                                icon: const Icon(Icons.remove),
                                 onPressed: materialAddCubit.decrement,
-                                child: const Icon(Icons.remove),
                               ),
                               const SizedBox(width: 10),
                               Text('${state.helmetModel.quantity}'),
                               const SizedBox(width: 10),
-                              ElevatedButton(
+                              IconButton(
+                                icon: const Icon(Icons.add),
                                 onPressed: materialAddCubit.increment,
-                                child: const Icon(Icons.add),
                               ),
                             ],
                           ),
@@ -114,13 +116,15 @@ class _MaterialAddPageView extends HookWidget {
                             child: MaterialButton(
                               color: Theme.of(context).colorScheme.primary,
                               onPressed: () async {
-                                await materialAddCubit.submitHelmetData(
-                                  HelmetModel(
-                                    name: state.helmetModel.name,
-                                    quantity: state.helmetModel.quantity,
-                                  ),
-                                );
-                                context.pop<bool>(true);
+                                if (formKey.currentState!.validate()) {
+                                  await materialAddCubit.submitHelmetData(
+                                    HelmetModel(
+                                      name: state.helmetModel.name,
+                                      quantity: state.helmetModel.quantity,
+                                    ),
+                                  );
+                                  context.pop<bool>(true);
+                                }
                               },
                               child: const Text(
                                 'Add helmet',
@@ -152,6 +156,11 @@ class _MaterialAddPageView extends HookWidget {
                           const SizedBox(height: 20),
                           const Text('Maximum working height:'),
                           TextFormField(
+                            controller: ladderMaximumHeightEditingController,
+                            onChanged: (value) {
+                              materialAddCubit
+                                  .updateLadderMaximumHeight(int.parse(value));
+                            },
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return 'Maximum working height is required ';
@@ -162,6 +171,11 @@ class _MaterialAddPageView extends HookWidget {
                           const SizedBox(height: 20),
                           const Text('Ladder load capacity:'),
                           TextFormField(
+                            controller: ladderLoadCapacityEditingController,
+                            onChanged: (value) {
+                              materialAddCubit
+                                  .updateLadderLoadCapacity(int.parse(value));
+                            },
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return 'Ladder load capacity is required ';
@@ -178,8 +192,10 @@ class _MaterialAddPageView extends HookWidget {
                                   await materialAddCubit.submitLadderData(
                                     LadderModel(
                                       name: state.ladderModel.name,
-                                      ladderLoadCapacityInKg: 0,
-                                      maximumWorkingHeightInCm: 0
+                                      ladderLoadCapacityInKg: state
+                                          .ladderModel.ladderLoadCapacityInKg,
+                                      maximumWorkingHeightInCm: state
+                                          .ladderModel.maximumWorkingHeightInCm,
                                     ),
                                   );
                                   context.pop<bool>(true);

@@ -9,11 +9,12 @@ class MaterialAddCubit extends Cubit<MaterialAddState> {
   }) : super(
           MaterialAddState(
             selectedCategory: null,
-            helmetModel: HelmetModel(name: '', quantity: 0),
+            helmetModel: HelmetModel(name: '', quantity: 1),
             ladderModel: LadderModel(
-                name: '',
-                ladderLoadCapacityInKg: 0,
-                maximumWorkingHeightInCm: 0),
+              name: '',
+              ladderLoadCapacityInKg: 0,
+              maximumWorkingHeightInCm: 0,
+            ),
             helmetIsVisible: false,
             ladderIsVisible: false,
             scaffoldPartIsVisible: false,
@@ -88,7 +89,33 @@ class MaterialAddCubit extends Cubit<MaterialAddState> {
     emit(newState);
   }
 
+  void updateLadderLoadCapacity(int newLadderLoad) {
+    final newState = state.copyWith(
+      ladderModel: LadderModel(
+        name: state.ladderModel.name,
+        ladderLoadCapacityInKg: newLadderLoad,
+        maximumWorkingHeightInCm: state.ladderModel.maximumWorkingHeightInCm,
+      ),
+    );
+    emit(newState);
+  }
+
+  void updateLadderMaximumHeight(int newMaxHeight) {
+    final newState = state.copyWith(
+      ladderModel: LadderModel(
+        name: state.ladderModel.name,
+        ladderLoadCapacityInKg: state.ladderModel.ladderLoadCapacityInKg,
+        maximumWorkingHeightInCm: newMaxHeight,
+      ),
+    );
+    emit(newState);
+  }
+
   Future<void> submitLadderData(LadderModel ladder) async {
-    await materialRepository.addLadderItem(ladder.name, ladder.maximumWorkingHeightInCm, ladder.ladderLoadCapacityInKg);
+    await materialRepository.addLadderItem(
+      ladder.name,
+      ladder.maximumWorkingHeightInCm,
+      ladder.ladderLoadCapacityInKg,
+    );
   }
 }
