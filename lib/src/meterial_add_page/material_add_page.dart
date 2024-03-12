@@ -170,27 +170,31 @@ Widget _buildHelmetSection(
           ],
         ),
         const SizedBox(height: 20),
-        Center(
-          child: MaterialButton(
-            color: Theme.of(context).colorScheme.primary,
-            onPressed: () async {
-              if (formKey.currentState!.validate()) {
-                await materialAddCubit.submitHelmetData(
-                  HelmetModel(
-                    name: state.data.helmetModel.name,
-                    quantity: state.data.helmetModel.quantity,
+        Row(
+          children: [
+            Expanded(
+              child: MaterialButton(
+                color: Theme.of(context).colorScheme.primary,
+                onPressed: () async {
+                  if (formKey.currentState!.validate()) {
+                    await materialAddCubit.submitHelmetData(
+                      HelmetModel(
+                        name: state.data.helmetModel.name,
+                        quantity: state.data.helmetModel.quantity,
+                      ),
+                    );
+                    context.pop<bool>(true);
+                  }
+                },
+                child: const Text(
+                  'Add helmet',
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
-                );
-                context.pop<bool>(true);
-              }
-            },
-            child: const Text(
-              'Add helmet',
-              style: TextStyle(
-                color: Colors.white,
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ],
     ),
@@ -254,28 +258,34 @@ Widget _buildLadderSection(
         ),
         const SizedBox(height: 20),
         Center(
-          child: MaterialButton(
-            color: Theme.of(context).colorScheme.primary,
-            onPressed: () async {
-              if (formKey.currentState!.validate()) {
-                await materialAddCubit.submitLadderData(
-                  LadderModel(
-                    name: state.data.ladderModel.name,
-                    ladderLoadCapacityInKg:
-                        state.data.ladderModel.ladderLoadCapacityInKg,
-                    maximumWorkingHeightInCm:
-                        state.data.ladderModel.maximumWorkingHeightInCm,
+          child: Row(
+            children: [
+              Expanded(
+                child: MaterialButton(
+                  color: Theme.of(context).colorScheme.primary,
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      await materialAddCubit.submitLadderData(
+                        LadderModel(
+                          name: state.data.ladderModel.name,
+                          ladderLoadCapacityInKg:
+                              state.data.ladderModel.ladderLoadCapacityInKg,
+                          maximumWorkingHeightInCm:
+                              state.data.ladderModel.maximumWorkingHeightInCm,
+                        ),
+                      );
+                      context.pop<bool>(true);
+                    }
+                  },
+                  child: const Text(
+                    'Add ladder',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
-                );
-                context.pop<bool>(true);
-              }
-            },
-            child: const Text(
-              'Add ladder',
-              style: TextStyle(
-                color: Colors.white,
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],
@@ -352,26 +362,32 @@ Widget _buildScaffoldPartSection(
         ),
         const SizedBox(height: 20),
         Center(
-          child: MaterialButton(
-            color: Theme.of(context).colorScheme.primary,
-            onPressed: () async {
-              if (formKey.currentState!.validate()) {
-                await materialAddCubit.submitScaffoldPartData(
-                  ScaffoldPartModel(
-                    name: state.data.scaffoldPartModel.name,
-                    quantity: state.data.scaffoldPartModel.quantity,
-                    imageBytes: state.data.scaffoldPartModel.imageBytes,
+          child: Row(
+            children: [
+              Expanded(
+                child: MaterialButton(
+                  color: Theme.of(context).colorScheme.primary,
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      await materialAddCubit.submitScaffoldPartData(
+                        ScaffoldPartModel(
+                          name: state.data.scaffoldPartModel.name,
+                          quantity: state.data.scaffoldPartModel.quantity,
+                          imageBytes: state.data.scaffoldPartModel.imageBytes,
+                        ),
+                      );
+                      context.pop<bool>(true);
+                    }
+                  },
+                  child: const Text(
+                    'Add scaffold part',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
-                );
-                context.pop<bool>(true);
-              }
-            },
-            child: const Text(
-              'Add scaffold part',
-              style: TextStyle(
-                color: Colors.white,
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],
