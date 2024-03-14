@@ -1,5 +1,5 @@
 import 'package:leancode_forms/leancode_forms.dart';
-import 'package:warehouse/src/meterial_add_page/icon_label.dart';
+import 'package:warehouse/src/meterial_add_page/models/icon_label.dart';
 
 class IntegerFieldCubit<E extends Object> extends FieldCubit<int, E> {
   IntegerFieldCubit({

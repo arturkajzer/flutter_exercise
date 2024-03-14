@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:warehouse/src/data/material_repository.dart';
-import 'package:warehouse/src/meterial_add_page/cubit/models/helmet_model.dart';
-import 'package:warehouse/src/meterial_add_page/cubit/models/ladder_model.dart';
-import 'package:warehouse/src/meterial_add_page/cubit/models/scaffold_part_model.dart';
+import 'package:warehouse/src/meterial_add_page/models/helmet_model.dart';
+import 'package:warehouse/src/meterial_add_page/models/ladder_model.dart';
+import 'package:warehouse/src/meterial_add_page/models/scaffold_part_model.dart';
 
 class MaterialAddPageCubit extends Cubit<bool> {
   MaterialAddPageCubit({
