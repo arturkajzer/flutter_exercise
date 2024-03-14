@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -8,9 +7,10 @@ import 'package:leancode_forms/leancode_forms.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/models/scaffold_part_model.dart';
-import 'package:warehouse/src/meterial_add_page/cubit/simple_form.cubit.dart';
 import 'package:warehouse/src/meterial_add_page/icon_label.dart';
 import 'package:warehouse/src/navigation/app_page.dart';
+import 'cubit/material_add_form_cubit.dart';
+import 'cubit/material_add_page_cubit.dart';
 import 'cubit/models/helmet_model.dart';
 import 'cubit/models/ladder_model.dart';
 
@@ -47,12 +47,6 @@ class _MaterialAddPageView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final materialAddCubit = useBloc(
-    //   () => MaterialAddCubit_Old(
-    //     materialRepository: context.read(),
-    //   ),
-    // );
-
     final pageCubit = context.read<MaterialAddPageCubit>();
     final formCubit = context.read<MaterialAddFormCubit>();
 
