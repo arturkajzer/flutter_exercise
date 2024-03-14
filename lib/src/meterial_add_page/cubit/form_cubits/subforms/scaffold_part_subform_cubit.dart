@@ -19,5 +19,11 @@ class ScaffoldPartSubformCubit extends FormGroupCubit {
   );
 
   final scaffoldPartQuantity = IntegerFieldCubit();
-  final scaffoldPartImage = ListOfIntegerFieldCubit();
+  final scaffoldPartImage = ListOfIntegerFieldCubit(
+    validator: (value) {
+      if (value.isEmpty) {
+        return 'Image is required';
+      }
+    },
+  );
 }

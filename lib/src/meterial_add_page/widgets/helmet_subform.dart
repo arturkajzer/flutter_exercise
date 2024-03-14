@@ -30,6 +30,7 @@ class HelmetSubform extends StatelessWidget {
           builder: (context, state) {
             return TextFormField(
               initialValue: state.value,
+              textInputAction: TextInputAction.next,
               onChanged: helmetNameCubit.getValueSetter(),
               decoration: InputDecoration(errorText: state.error),
             );

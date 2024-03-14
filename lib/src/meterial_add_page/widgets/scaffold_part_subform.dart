@@ -40,6 +40,7 @@ class ScaffoldPartSubform extends StatelessWidget {
           builder: (context, state) {
             return TextFormField(
               initialValue: state.value,
+              textInputAction: TextInputAction.next,
               onChanged: scaffoldPartNameCubit.getValueSetter(),
               decoration: InputDecoration(errorText: state.error),
             );

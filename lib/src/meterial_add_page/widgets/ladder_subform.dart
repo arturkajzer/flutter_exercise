@@ -34,6 +34,7 @@ class LadderSubform extends StatelessWidget {
           builder: (context, state) {
             return TextFormField(
               initialValue: state.value,
+              textInputAction: TextInputAction.next,
               onChanged: ladderNameCubit.getValueSetter(),
               decoration: InputDecoration(errorText: state.error),
             );
@@ -47,6 +48,8 @@ class LadderSubform extends StatelessWidget {
           field: ladderMaximumHeightCubit,
           builder: (context, state) {
             return TextFormField(
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.next,
               initialValue: state.value,
               onChanged: ladderMaximumHeightCubit.getValueSetter(),
               decoration: InputDecoration(errorText: state.error),
@@ -61,6 +64,8 @@ class LadderSubform extends StatelessWidget {
           field: ladderLoadCapacity,
           builder: (context, state) {
             return TextFormField(
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.next,
               initialValue: state.value,
               onChanged: ladderLoadCapacity.getValueSetter(),
               decoration: InputDecoration(errorText: state.error),
