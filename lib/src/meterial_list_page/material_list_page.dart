@@ -29,9 +29,8 @@ class _MaterialListPageView extends HookWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         forceMaterialTransparency: true,
-        title: const Center(
-          child: Text('Materials'),
-        ),
+        centerTitle: true,
+        title: const Text('Materials'),
         actions: [
           IconButton(
             onPressed: () async {

@@ -58,9 +58,8 @@ class _MaterialAddPageView extends HookWidget {
               backgroundColor: Colors.white,
               appBar: AppBar(
                 forceMaterialTransparency: true,
-                title: const Center(
-                  child: Text('Add material'),
-                ),
+                centerTitle: true,
+                title: const Text('Add material'),
               ),
               body: Padding(
                 padding: const EdgeInsets.all(10),

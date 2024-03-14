@@ -39,7 +39,7 @@ dev_dependencies:
   freezed: ^2.4.7
   go_router_builder: ^2.4.1
   json_serializable: ^6.5.4
-  leancode_lint: 8.0.0
+  leancode_lint: ^11.0.0
 
 flutter:
   uses-material-design: true
