@@ -45,7 +45,6 @@ class _MaterialAddPageView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pageCubit = context.read<MaterialAddPageCubit>();
-    final formCubit = context.read<MaterialAddFormCubit>();
 
     final categoryDropDownCubit =
         context.read<MaterialAddFormCubit>().categoryDropDown;
@@ -75,41 +74,7 @@ class _MaterialAddPageView extends HookWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        FieldBuilder(
-                          field: categoryDropDownCubit,
-                          builder: (context, state) {
-                            return DropdownButton<MaterialCategory>(
-                              hint: const Text('Please, select item'),
-                              value: state.value,
-                              onChanged: (value) {
-                                categoryDropDownCubit.setValue(value);
-                                switch (value) {
-                                  case null:
-                                    formCubit.showLadderSubForm();
-                                  case MaterialCategory.helmet:
-                                    formCubit.showHelmetSubForm();
-                                  case MaterialCategory.ladder:
-                                    formCubit.showLadderSubForm();
-                                  case MaterialCategory.scaffoldPart:
-                                    formCubit.showScaffoldPartSubForm();
-                                }
-                                return;
-                              },
-                              items: MaterialCategory.values.map((iconLabel) {
-                                return DropdownMenuItem<MaterialCategory>(
-                                  value: iconLabel,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(iconLabel.icon),
-                                      const SizedBox(width: 10),
-                                      Text(iconLabel.label),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
-                            );
-                          },
-                        ),
+                        const CategoryDropDown(),
                         const SizedBox(height: 20),
                         switch (categoryDropDownCubit.state.value) {
                           null => Container(),
@@ -125,6 +90,55 @@ class _MaterialAddPageView extends HookWidget {
               ),
             );
           },
+        );
+      },
+    );
+  }
+}
+
+class CategoryDropDown extends StatelessWidget {
+  const CategoryDropDown({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final formCubit = context.read<MaterialAddFormCubit>();
+    final categoryDropDownCubit =
+        context.read<MaterialAddFormCubit>().categoryDropDown;
+
+    return FieldBuilder(
+      field: categoryDropDownCubit,
+      builder: (context, state) {
+        return DropdownButton<MaterialCategory>(
+          hint: const Text('Please, select item'),
+          value: state.value,
+          onChanged: (value) {
+            categoryDropDownCubit.setValue(value);
+            switch (value) {
+              case null:
+                formCubit.showLadderSubForm();
+              case MaterialCategory.helmet:
+                formCubit.showHelmetSubForm();
+              case MaterialCategory.ladder:
+                formCubit.showLadderSubForm();
+              case MaterialCategory.scaffoldPart:
+                formCubit.showScaffoldPartSubForm();
+            }
+            return;
+          },
+          items: MaterialCategory.values.map((iconLabel) {
+            return DropdownMenuItem<MaterialCategory>(
+              value: iconLabel,
+              child: Row(
+                children: <Widget>[
+                  Icon(iconLabel.icon),
+                  const SizedBox(width: 10),
+                  Text(iconLabel.label),
+                ],
+              ),
+            );
+          }).toList(),
         );
       },
     );
