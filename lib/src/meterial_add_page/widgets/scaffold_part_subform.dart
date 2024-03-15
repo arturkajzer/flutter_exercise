@@ -7,7 +7,8 @@ import 'package:leancode_forms/leancode_forms.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/form_cubits/material_add_form_cubit.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/material_add_page_cubit.dart';
 import 'package:warehouse/src/meterial_add_page/models/scaffold_part_model.dart';
-import 'package:warehouse/src/meterial_add_page/widgets/form_text_field.dart';
+import 'package:warehouse/src/meterial_add_page/widgets/form_fields/form_increment_decrement_field.dart';
+import 'package:warehouse/src/meterial_add_page/widgets/form_fields/form_text_field.dart';
 
 class ScaffoldPartSubform extends StatelessWidget {
   const ScaffoldPartSubform({
@@ -46,25 +47,8 @@ class ScaffoldPartSubform extends StatelessWidget {
           height: 20,
         ),
         const Text('Quantity:'),
-        FieldBuilder(
+        FormIncrementDecrementField(
           field: scaffoldPartQuantityCubit,
-          builder: (context, state) {
-            return Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.remove),
-                  onPressed: scaffoldPartQuantityCubit.decrement,
-                ),
-                const SizedBox(width: 10),
-                Text('${scaffoldPartQuantityCubit.state.value}'),
-                const SizedBox(width: 10),
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: scaffoldPartQuantityCubit.increment,
-                ),
-              ],
-            );
-          },
         ),
         const SizedBox(
           height: 20,

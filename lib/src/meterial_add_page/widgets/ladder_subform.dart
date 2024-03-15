@@ -5,7 +5,7 @@ import 'package:leancode_forms/leancode_forms.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/form_cubits/material_add_form_cubit.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/material_add_page_cubit.dart';
 import 'package:warehouse/src/meterial_add_page/models/ladder_model.dart';
-import 'package:warehouse/src/meterial_add_page/widgets/form_text_field.dart';
+import 'package:warehouse/src/meterial_add_page/widgets/form_fields/form_text_field.dart';
 
 class LadderSubform extends StatelessWidget {
   const LadderSubform({
@@ -75,7 +75,7 @@ class LadderSubform extends StatelessWidget {
                             maximumWorkingHeightInCm:
                                 int.parse(ladderMaximumHeightCubit.state.value),
                             ladderLoadCapacityInKg:
-                                int.parse(ladderNameCubit.state.value),
+                                int.parse(ladderLoadCapacity.state.value),
                           ),
                         )
                         .then((result) => context.pop<bool>(true));

@@ -1,5 +1,6 @@
 import 'package:leancode_forms/leancode_forms.dart';
-import 'package:warehouse/src/meterial_add_page/cubit/form_cubits/field_cubit_helper.dart';
+import '../field_cubits/integer_field_cubit.dart';
+import '../field_cubits/list_of_integer_field_cubit.dart';
 
 class ScaffoldPartSubformCubit extends FormGroupCubit {
   ScaffoldPartSubformCubit() {

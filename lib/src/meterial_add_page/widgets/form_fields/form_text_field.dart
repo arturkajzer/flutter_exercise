@@ -25,3 +25,15 @@ class FormTextField<E extends Object> extends FieldBuilder<String, E> {
           ),
         );
 }
+
+// FieldBuilder(
+//   field: helmetNameCubit,
+//   builder: (context, state) {
+//     return TextFormField(
+//       initialValue: state.value,
+//       textInputAction: TextInputAction.next,
+//       onChanged: helmetNameCubit.getValueSetter(),
+//       decoration: InputDecoration(errorText: state.error),
+//     );
+//   },
+// ),
