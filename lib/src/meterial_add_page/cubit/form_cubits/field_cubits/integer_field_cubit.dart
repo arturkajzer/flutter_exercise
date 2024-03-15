@@ -11,5 +11,9 @@ class IntegerFieldCubit<E extends Object> extends FieldCubit<int, E> {
   bool get isNegative => state.value.isNegative;
 
   void increment() => setValue(state.value + 1);
-  void decrement() => setValue(state.value - 1);
+  void decrement() {
+    if (state.value > 1) {
+      setValue(state.value - 1);
+    }
+  }
 }
