@@ -76,30 +76,49 @@ class ScaffoldPartSubform extends StatelessWidget {
         FieldBuilder(
           field: scaffoldPartImageCubit,
           builder: (context, state) {
-            return GestureDetector(
-              onTap: () async {
-                final imageBytes = await _pickImageFromGallery();
-                scaffoldPartImageCubit.setValue(imageBytes);
-              },
-              child: scaffoldPartImageCubit.state.value.isNotEmpty
-                  ? Image.memory(
-                      Uint8List.fromList(scaffoldPartImageCubit.state.value),
-                      width: 200,
-                      height: 200,
-                    )
-                  : Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        Icons.camera_alt,
-                        size: 50,
-                        color: Colors.black,
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    final imageBytes = await _pickImageFromGallery();
+                    scaffoldPartImageCubit.setValue(imageBytes);
+                  },
+                  child: scaffoldPartImageCubit.state.value.isNotEmpty
+                      ? Image.memory(
+                          Uint8List.fromList(
+                            scaffoldPartImageCubit.state.value,
+                          ),
+                          width: 200,
+                          height: 200,
+                        )
+                      : Container(
+                          width: 150,
+                          height: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt,
+                            size: 50,
+                            color: Colors.black,
+                          ),
+                        ),
+                ),
+                if (state.error != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      state.error!,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
                       ),
                     ),
+                  )
+                else
+                  Container(),
+              ],
             );
           },
         ),
