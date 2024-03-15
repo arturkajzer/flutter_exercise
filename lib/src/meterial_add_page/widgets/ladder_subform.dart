@@ -5,6 +5,7 @@ import 'package:leancode_forms/leancode_forms.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/form_cubits/material_add_form_cubit.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/material_add_page_cubit.dart';
 import 'package:warehouse/src/meterial_add_page/models/ladder_model.dart';
+import 'package:warehouse/src/meterial_add_page/widgets/form_text_field.dart';
 
 class LadderSubform extends StatelessWidget {
   const LadderSubform({
@@ -29,47 +30,32 @@ class LadderSubform extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('Name:'),
-        FieldBuilder(
+        FormTextField(
           field: ladderNameCubit,
-          builder: (context, state) {
-            return TextFormField(
-              initialValue: state.value,
-              textInputAction: TextInputAction.next,
-              onChanged: ladderNameCubit.getValueSetter(),
-              decoration: InputDecoration(errorText: state.error),
-            );
+          errorTranslator: (errorMessage) {
+            return errorMessage;
           },
         ),
         const SizedBox(
           height: 20,
         ),
         const Text('Maximum working height:'),
-        FieldBuilder(
+        FormTextField(
           field: ladderMaximumHeightCubit,
-          builder: (context, state) {
-            return TextFormField(
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.next,
-              initialValue: state.value,
-              onChanged: ladderMaximumHeightCubit.getValueSetter(),
-              decoration: InputDecoration(errorText: state.error),
-            );
+          keyboardType: TextInputType.number,
+          errorTranslator: (errorMessage) {
+            return errorMessage;
           },
         ),
         const SizedBox(
           height: 20,
         ),
         const Text('Ladder load capacity:'),
-        FieldBuilder(
+        FormTextField(
           field: ladderLoadCapacity,
-          builder: (context, state) {
-            return TextFormField(
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.next,
-              initialValue: state.value,
-              onChanged: ladderLoadCapacity.getValueSetter(),
-              decoration: InputDecoration(errorText: state.error),
-            );
+          keyboardType: TextInputType.number,
+          errorTranslator: (errorMessage) {
+            return errorMessage;
           },
         ),
         const SizedBox(

@@ -5,6 +5,7 @@ import 'package:leancode_forms/leancode_forms.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/form_cubits/material_add_form_cubit.dart';
 import 'package:warehouse/src/meterial_add_page/cubit/material_add_page_cubit.dart';
 import 'package:warehouse/src/meterial_add_page/models/helmet_model.dart';
+import 'package:warehouse/src/meterial_add_page/widgets/form_text_field.dart';
 
 class HelmetSubform extends StatelessWidget {
   const HelmetSubform({
@@ -25,15 +26,10 @@ class HelmetSubform extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('Name:'),
-        FieldBuilder(
+        FormTextField(
           field: helmetNameCubit,
-          builder: (context, state) {
-            return TextFormField(
-              initialValue: state.value,
-              textInputAction: TextInputAction.next,
-              onChanged: helmetNameCubit.getValueSetter(),
-              decoration: InputDecoration(errorText: state.error),
-            );
+          errorTranslator: (errorMessage) {
+            return errorMessage;
           },
         ),
         const SizedBox(
@@ -94,3 +90,16 @@ class HelmetSubform extends StatelessWidget {
     );
   }
 }
+
+
+        // FieldBuilder(
+        //   field: helmetNameCubit,
+        //   builder: (context, state) {
+        //     return TextFormField(
+        //       initialValue: state.value,
+        //       textInputAction: TextInputAction.next,
+        //       onChanged: helmetNameCubit.getValueSetter(),
+        //       decoration: InputDecoration(errorText: state.error),
+        //     );
+        //   },
+        // ),
